@@ -11,6 +11,7 @@ public interface CustomPreference {
     String JWTSecurityKey();
     String KakaoRedirect();
     String snsLoginRedirect();
-    String googleClientId();
+    String AWSAccessKey();
+    String AWSSecretKey ();
 
 }

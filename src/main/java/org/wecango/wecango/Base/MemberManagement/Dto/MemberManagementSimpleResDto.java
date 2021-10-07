@@ -14,4 +14,5 @@ public class MemberManagementSimpleResDto {
     boolean userActivationStatus;
     String profileImage;
     String role;
+    String fromJoin;
 }

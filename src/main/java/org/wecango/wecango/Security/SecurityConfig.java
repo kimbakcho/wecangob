@@ -46,6 +46,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
+                .antMatchers("/imageUpload")
+                .permitAll();
+
+        http
+                .authorizeRequests()
                 .antMatchers("/ImmigrationStatus/nation","/ImmigrationStatus/adminMainRecommend")
                 .permitAll();
 
@@ -53,6 +58,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/UserBookMarkingCountry/isBookMarking")
                 .permitAll();
+
+        http
+                .authorizeRequests()
+                .antMatchers("/AlarmTravelFlag/hasFlag")
+                .permitAll();
+
 
         http
                 .authorizeRequests()

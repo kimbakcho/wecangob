@@ -92,6 +92,7 @@ public class NaverLogin {
 
         Cookie myCookie = new Cookie("wSesstion",jwtTokenBuilder.buildToken(member));
         myCookie.setPath("/");
+        myCookie.setMaxAge(86400);
         response.addCookie(myCookie);
         response.sendRedirect(customPreference.snsLoginRedirect());
 

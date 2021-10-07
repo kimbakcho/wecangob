@@ -7,6 +7,7 @@ import com.google.api.client.json.gson.GsonFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.wecango.wecango.Base.MemberManagement.Domain.MemberManagement;
 import org.wecango.wecango.Base.MemberManagement.Repository.MemberManagementDataRepository;
@@ -31,6 +32,8 @@ public class GoogleLogin {
     final MemberManagementDataRepository memberManagementDataRepository;
 
     final JwtTokenBuilder jwtTokenBuilder;
+
+
 
     @GetMapping
     public void redirectLogin(String token, HttpServletResponse response) throws GeneralSecurityException, IOException {
@@ -85,6 +88,7 @@ public class GoogleLogin {
             }
             Cookie myCookie = new Cookie("wSesstion",jwtTokenBuilder.buildToken(member));
             myCookie.setPath("/");
+            myCookie.setMaxAge(86400);
             response.addCookie(myCookie);
             response.sendRedirect(customPreference.snsLoginRedirect());
         }

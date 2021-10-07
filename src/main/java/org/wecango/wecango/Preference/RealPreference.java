@@ -51,7 +51,12 @@ public class RealPreference implements CustomPreference{
     }
 
     @Override
-    public String googleClientId() {
-        return "115231264132-tln84m4cvfiv8ii4p7mgkgvtd41mii1j.apps.googleusercontent.com";
+    public String AWSAccessKey() {
+        return "AKIAQCABO75P6NONDG5B";
+    }
+
+    @Override
+    public String AWSSecretKey() {
+        return "BWhO+GM+scq2B9V+LctqIgsdp+LRgqgid2vYDlTm";
     }
 }

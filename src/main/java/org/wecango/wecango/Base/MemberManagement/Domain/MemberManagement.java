@@ -39,4 +39,8 @@ public class MemberManagement {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
 }
