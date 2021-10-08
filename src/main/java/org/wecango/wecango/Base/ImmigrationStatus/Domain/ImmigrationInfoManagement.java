@@ -1,16 +1,19 @@
 package org.wecango.wecango.Base.ImmigrationStatus.Domain;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.wecango.wecango.Base.NationControl.Domain.NationControl;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "immigrationInfoManagement")
 @NoArgsConstructor
 @Getter
+@Setter
+@AllArgsConstructor
+@Builder
 public class ImmigrationInfoManagement {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
@@ -20,6 +23,8 @@ public class ImmigrationInfoManagement {
     String classification;
     String contentMarkDown;
     String contentHtml;
-    String updateDateTime;
+    LocalDateTime updateDateTime;
+
+
 
 }

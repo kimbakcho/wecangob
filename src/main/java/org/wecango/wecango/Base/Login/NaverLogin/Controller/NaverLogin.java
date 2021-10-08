@@ -1,32 +1,21 @@
-package org.wecango.wecango.Base.SnSLogin.NaverLogin.Controller;
+package org.wecango.wecango.Base.Login.NaverLogin.Controller;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 import org.wecango.wecango.Base.MemberManagement.Domain.MemberManagement;
 import org.wecango.wecango.Base.MemberManagement.Repository.MemberManagementDataRepository;
-import org.wecango.wecango.Base.SnSLogin.Service.JwtTokenBuilder;
+import org.wecango.wecango.Base.Login.Service.JwtTokenBuilder;
 import org.wecango.wecango.Preference.CustomPreference;
-import org.wecango.wecango.Security.AccountAdapter;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 

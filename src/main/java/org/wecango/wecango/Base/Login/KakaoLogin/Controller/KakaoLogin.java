@@ -1,7 +1,5 @@
-package org.wecango.wecango.Base.SnSLogin.KakaoLogin.Controller;
+package org.wecango.wecango.Base.Login.KakaoLogin.Controller;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
@@ -12,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 import org.wecango.wecango.Base.MemberManagement.Domain.MemberManagement;
 import org.wecango.wecango.Base.MemberManagement.Repository.MemberManagementDataRepository;
-import org.wecango.wecango.Base.SnSLogin.Service.JwtTokenBuilder;
+import org.wecango.wecango.Base.Login.Service.JwtTokenBuilder;
 import org.wecango.wecango.Preference.CustomPreference;
 
 import javax.servlet.http.Cookie;
@@ -21,8 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 

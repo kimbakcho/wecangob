@@ -13,5 +13,7 @@ public interface CustomPreference {
     String snsLoginRedirect();
     String AWSAccessKey();
     String AWSSecretKey ();
+    String AdminLoginPage();
+    String AdminPage();
 
 }

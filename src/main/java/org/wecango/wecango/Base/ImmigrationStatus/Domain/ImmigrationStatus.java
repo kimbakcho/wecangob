@@ -1,9 +1,6 @@
 package org.wecango.wecango.Base.ImmigrationStatus.Domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.wecango.wecango.Base.NationControl.Domain.NationControl;
 
 import javax.persistence.*;
@@ -15,6 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Getter
+@Setter
 public class ImmigrationStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +27,7 @@ public class ImmigrationStatus {
     Boolean recommendedCountry;
     Integer recommendedCountryOrder;
     String recommendedCountryImageUrl;
+    String recommendedCountryImageFileName;
     Integer vaccinationFlag;
     String pcrTest;
     String mandatoryQuarantineText;

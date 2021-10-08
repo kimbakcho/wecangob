@@ -59,4 +59,14 @@ public class RealPreference implements CustomPreference{
     public String AWSSecretKey() {
         return "BWhO+GM+scq2B9V+LctqIgsdp+LRgqgid2vYDlTm";
     }
+
+    @Override
+    public String AdminLoginPage() {
+        return "http://app.thkomeet.com:8383/AdminLogin";
+    }
+
+    @Override
+    public String AdminPage() {
+        return "http://app.thkomeet.com:8383/WCAdmin";
+    }
 }

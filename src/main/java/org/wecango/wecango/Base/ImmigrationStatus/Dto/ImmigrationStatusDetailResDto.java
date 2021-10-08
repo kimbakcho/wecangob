@@ -19,6 +19,7 @@ public class ImmigrationStatusDetailResDto {
     Boolean recommendedCountry;
     Integer recommendedCountryOrder;
     String recommendedCountryImageUrl;
+    String recommendedCountryImageFileName;
     Integer vaccinationFlag;
     String pcrTest;
     String mandatoryQuarantineText;

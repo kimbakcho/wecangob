@@ -1,11 +1,10 @@
 package org.wecango.wecango.Base.ImmigrationStatus.Controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.wecango.wecango.Base.ImmigrationStatus.Dto.ImmigrationStatusDetailResDto;
 import org.wecango.wecango.Base.ImmigrationStatus.Dto.ImmigrationStatusSimpleResDto;
+import org.wecango.wecango.Base.ImmigrationStatus.Dto.ImmigrationStatusUpdateReqDto;
 import org.wecango.wecango.Base.ImmigrationStatus.Service.ImmigrationStatusService;
 
 import java.util.List;
@@ -26,4 +25,15 @@ public class ImmigrationStatusController {
     public List<ImmigrationStatusSimpleResDto> getAdminMainRecommend(){
         return immigrationStatusService.getAdminMainRecommend();
     }
+
+    @GetMapping("/allInfo")
+    public List<ImmigrationStatusSimpleResDto> allInfo(){
+        return immigrationStatusService.AllInfo();
+    }
+
+    @PostMapping("/update")
+    public ImmigrationStatusDetailResDto update(@RequestBody ImmigrationStatusUpdateReqDto reqDto){
+        return immigrationStatusService.update(reqDto);
+    }
+
 }

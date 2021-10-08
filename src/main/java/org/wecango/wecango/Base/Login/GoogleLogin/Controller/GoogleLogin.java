@@ -1,4 +1,4 @@
-package org.wecango.wecango.Base.SnSLogin.GoogleLogin.Controller;
+package org.wecango.wecango.Base.Login.GoogleLogin.Controller;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -7,11 +7,10 @@ import com.google.api.client.json.gson.GsonFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.wecango.wecango.Base.MemberManagement.Domain.MemberManagement;
 import org.wecango.wecango.Base.MemberManagement.Repository.MemberManagementDataRepository;
-import org.wecango.wecango.Base.SnSLogin.Service.JwtTokenBuilder;
+import org.wecango.wecango.Base.Login.Service.JwtTokenBuilder;
 import org.wecango.wecango.Preference.CustomPreference;
 
 import javax.servlet.http.Cookie;

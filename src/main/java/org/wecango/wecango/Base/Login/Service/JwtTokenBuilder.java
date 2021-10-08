@@ -1,8 +1,7 @@
-package org.wecango.wecango.Base.SnSLogin.Service;
+package org.wecango.wecango.Base.Login.Service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.wecango.wecango.Base.MemberManagement.Domain.MemberManagement;

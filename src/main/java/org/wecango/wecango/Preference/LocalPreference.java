@@ -59,4 +59,15 @@ public class LocalPreference implements CustomPreference{
     public String AWSSecretKey() {
         return "BWhO+GM+scq2B9V+LctqIgsdp+LRgqgid2vYDlTm";
     }
+
+    @Override
+    public String AdminLoginPage() {
+        return "http://localhost:8080/AdminLogin";
+    }
+
+    @Override
+    public String AdminPage() {
+        return "http://localhost:8080/WCAdmin";
+    }
+
 }
