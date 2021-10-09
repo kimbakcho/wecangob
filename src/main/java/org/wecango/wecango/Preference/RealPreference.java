@@ -62,11 +62,11 @@ public class RealPreference implements CustomPreference{
 
     @Override
     public String AdminLoginPage() {
-        return "http://app.thkomeet.com:8383/AdminLogin";
+        return "http://app.thkomeet.com:8383/wecango/AdminLogin";
     }
 
     @Override
     public String AdminPage() {
-        return "http://app.thkomeet.com:8383/WCAdmin";
+        return "http://app.thkomeet.com:8383/wecango/WCAdmin";
     }
 }
