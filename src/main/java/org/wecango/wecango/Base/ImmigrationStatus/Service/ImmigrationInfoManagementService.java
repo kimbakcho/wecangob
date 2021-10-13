@@ -17,13 +17,13 @@ public class ImmigrationInfoManagementService {
     final ImmigrationInfoManagementDataRepository immigrationInfoManagementDataRepository;
 
     public ImmigrationInfoManagementResDto getDoc(Integer id){
-        ImmigrationInfoManagement byId = immigrationInfoManagementDataRepository.getById(id);
+        ImmigrationInfoManagement byId = immigrationInfoManagementDataRepository.findById(id).get();
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(byId, ImmigrationInfoManagementResDto.class);
     }
 
     public ImmigrationInfoManagementResDto updateDoc(ImmigrationInfoManagementUpdateReqDto reqDto) {
-        ImmigrationInfoManagement byId = immigrationInfoManagementDataRepository.getById(reqDto.getId());
+        ImmigrationInfoManagement byId = immigrationInfoManagementDataRepository.findById(reqDto.getId()).get();
         byId.setContentMarkDown(reqDto.getMarkDown());
         byId.setContentHtml(reqDto.getHtml());
         ModelMapper modelMapper = new ModelMapper();

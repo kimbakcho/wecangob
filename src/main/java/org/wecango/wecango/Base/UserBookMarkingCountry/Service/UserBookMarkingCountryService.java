@@ -30,7 +30,7 @@ public class UserBookMarkingCountryService {
     final ImmigrationStatusDataRepository immigrationStatusDataRepository;
 
     public UserBookMarkingCountryResDto isBookMarking(MemberManagement memberManagement, int nationId) {
-        NationControl nationControl = nationControlDataRepository.getById(nationId);
+        NationControl nationControl = nationControlDataRepository.findById(nationId).get();
         Optional<UserBookMarkingCountry> userBookMarkingCountryOptional = userBookMarkingCountryDataRepository.findByUserUidAndNationId(memberManagement, nationControl);
         if (userBookMarkingCountryOptional.isEmpty()) {
             return null;
@@ -42,7 +42,7 @@ public class UserBookMarkingCountryService {
     }
 
     public UserBookMarkingCountryResDto bookMarking(MemberManagement memberManagement, int nationId) {
-        NationControl nationControl = nationControlDataRepository.getById(nationId);
+        NationControl nationControl = nationControlDataRepository.findById(nationId).get();
         List<UserBookMarkingCountry> byUserUidOrderByOrderIdxDesc = userBookMarkingCountryDataRepository.findByUserUidOrderByOrderIdxDesc(memberManagement);
         int orderIdx = 0;
         if (byUserUidOrderByOrderIdxDesc.size() > 0) {
@@ -62,12 +62,12 @@ public class UserBookMarkingCountryService {
     }
 
     public void bookUnMarking(MemberManagement memberManagement, int nationId) {
-        NationControl nationControl = nationControlDataRepository.getById(nationId);
+        NationControl nationControl = nationControlDataRepository.findById(nationId).get();
         userBookMarkingCountryDataRepository.deleteByUserUidAndNationId(memberManagement, nationControl);
     }
 
     public List<UserBookMarkingCountryResDto> bookMarkingList(MemberManagement memberManagement) {
-        List<UserBookMarkingCountry> byUserUid = userBookMarkingCountryDataRepository.findByUserUid(memberManagement);
+        List<UserBookMarkingCountry> byUserUid = userBookMarkingCountryDataRepository.findByUserUidOrderByOrderIdxAsc(memberManagement);
         ModelMapper modelMapper = new ModelMapper();
         List<UserBookMarkingCountryResDto> markingList = byUserUid.stream().map(
                 x -> {
@@ -79,5 +79,16 @@ public class UserBookMarkingCountryService {
         ).collect(Collectors.toList());
 
         return markingList;
+    }
+
+    public void changeOrderIdx(MemberManagement memberManagement, int oldIndex, int newIndex) {
+        UserBookMarkingCountry oldOrderIdx = userBookMarkingCountryDataRepository.getByUserUidAndOrderIdx(memberManagement, oldIndex);
+        UserBookMarkingCountry newOrderIdx = userBookMarkingCountryDataRepository.getByUserUidAndOrderIdx(memberManagement, newIndex);
+        newOrderIdx.setOrderIdx(-1);
+        userBookMarkingCountryDataRepository.flush();
+        oldOrderIdx.setOrderIdx(newIndex);
+        userBookMarkingCountryDataRepository.flush();
+        newOrderIdx.setOrderIdx(oldIndex);
+
     }
 }

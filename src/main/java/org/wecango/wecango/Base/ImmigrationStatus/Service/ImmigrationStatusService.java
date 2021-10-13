@@ -28,7 +28,7 @@ public class ImmigrationStatusService {
     final ImmigrationInfoManagementDataRepository immigrationInfoManagementDataRepository;
 
     public ImmigrationStatusDetailResDto getNationInfo(Integer id){
-        NationControl nationControl = nationControlDataRepository.getById(id);
+        NationControl nationControl = nationControlDataRepository.findById(id).get();
         ImmigrationStatus byId = immigrationStatusDataRepository.getByNationId(nationControl);
         if(byId.getVaccinatedLeavesCountry()== null){
             ImmigrationInfoManagement vaccinatedLeavesCountry = ImmigrationInfoManagement.builder()
@@ -99,7 +99,7 @@ public class ImmigrationStatusService {
     }
 
     public ImmigrationStatusDetailResDto update(ImmigrationStatusUpdateReqDto reqDto) {
-        ImmigrationStatus updateItem = immigrationStatusDataRepository.getById(reqDto.getId());
+        ImmigrationStatus updateItem = immigrationStatusDataRepository.findById(reqDto.getId()).get();
 
 
         if(reqDto.getNationFlagImageUrl() != null ){

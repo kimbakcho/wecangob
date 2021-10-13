@@ -33,6 +33,12 @@
                 <spring.profiles.active>real</spring.profiles.active>
             </properties>
         </profile>
+        <profile>
+            <id>testreal</id>
+            <properties>
+                <spring.profiles.active>real</spring.profiles.active>
+            </properties>
+        </profile>
     </profiles>
 
     <dependencies>
@@ -47,6 +53,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+
         </dependency>
 
         <dependency>

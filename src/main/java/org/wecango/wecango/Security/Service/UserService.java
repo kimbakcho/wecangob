@@ -22,7 +22,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String uid) throws UsernameNotFoundException {
-        MemberManagement byId = memberManagementDataRepository.getById(uid);
+        MemberManagement byId = memberManagementDataRepository.findById(uid).get();
         if(byId.getPassword() == null){
             byId.setPassword("");
         }

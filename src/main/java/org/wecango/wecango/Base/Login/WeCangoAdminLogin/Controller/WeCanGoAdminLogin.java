@@ -5,10 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.wecango.wecango.Base.Login.Service.JwtTokenBuilder;
@@ -38,6 +35,11 @@ public class WeCanGoAdminLogin {
 
     final JwtTokenBuilder jwtTokenBuilder;
 
+    @GetMapping("/TEST")
+    public String TEST(){
+        return "TEST";
+    }
+
     @PostMapping("/adminLogin")
     public void adminLogin(@RequestParam String id,@RequestParam String pw, HttpServletResponse httpServletResponse) throws IOException {
         Optional<MemberManagement> byId = memberManagementDataRepository.findById(id);
@@ -66,6 +68,7 @@ public class WeCanGoAdminLogin {
         Cookie myCookie = new Cookie("wSesstion",jwtTokenBuilder.buildToken(memberManagement));
         myCookie.setPath("/");
         myCookie.setMaxAge(86400);
+        myCookie.setDomain(customPreference.CookieDomain());
         httpServletResponse.addCookie(myCookie);
 
         httpServletResponse.sendRedirect(customPreference.AdminPage());

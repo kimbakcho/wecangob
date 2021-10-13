@@ -45,4 +45,9 @@ public class UserBookMarkingCountryController {
     void bookUnMarking(@AuthenticationPrincipal(expression = "memberManagement")MemberManagement memberManagement,int nationId){
         userBookMarkingCountryService.bookUnMarking(memberManagement,nationId);
     }
+
+    @PostMapping("/changeOrderIdx")
+    void changeOrderIdx(@AuthenticationPrincipal(expression = "memberManagement")MemberManagement memberManagement,int oldIndex,int newIndex){
+        userBookMarkingCountryService.changeOrderIdx(memberManagement,oldIndex,newIndex);
+    }
 }

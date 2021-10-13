@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 import java.util.Properties;
 
 @Component
-@Profile("local")
-public class LocalPreference implements CustomPreference{
+@Profile("testreal")
+public class TestRealPreference implements CustomPreference{
     @Override
     public String getDataSourceUrl() {
         return "jdbc:mysql://192.168.0.4:3306/wecango?serverTimezone=Asia/Seoul";
@@ -21,7 +21,7 @@ public class LocalPreference implements CustomPreference{
         properties.setProperty("hibernate.use_sql_comments", "true");
         properties.setProperty("hibernate.format_sql", "true");
         properties.setProperty("hibernate.default_batch_fetch_size", "100");
-//        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MariaDB102Dialect");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MariaDB102Dialect");
         return properties;
     }
 
@@ -42,12 +42,12 @@ public class LocalPreference implements CustomPreference{
 
     @Override
     public String KakaoRedirect() {
-        return "http://localhost:8181/kakaoLogin/redirect";
+        return "http://app.thkomeet.com:8181/kakaoLogin/redirect";
     }
 
     @Override
     public String snsLoginRedirect() {
-        return "http://localhost:8080";
+        return "http://app.thkomeet.com:8383/wecango";
     }
 
     @Override
@@ -62,17 +62,16 @@ public class LocalPreference implements CustomPreference{
 
     @Override
     public String AdminLoginPage() {
-        return "http://localhost:8080/AdminLogin";
+        return "http://app.thkomeet.com:8383/wecango/AdminLogin";
     }
 
     @Override
     public String AdminPage() {
-        return "http://localhost:8080/WCAdmin";
+        return "http://app.thkomeet.com:8383/wecango/WCAdmin";
     }
 
     @Override
     public String CookieDomain() {
-        return "localhost";
+        return "app.thkomeet.com";
     }
-
 }

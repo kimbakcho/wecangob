@@ -12,6 +12,8 @@ public interface UserBookMarkingCountryDataRepository
         extends JpaRepository<UserBookMarkingCountry,Integer> {
     Optional<UserBookMarkingCountry> findByUserUidAndNationId(MemberManagement userUid, NationControl nationId);
     List<UserBookMarkingCountry> findByUserUidOrderByOrderIdxDesc(MemberManagement userUid);
-    List<UserBookMarkingCountry> findByUserUid(MemberManagement userUid);
+    List<UserBookMarkingCountry> findByUserUidOrderByOrderIdxAsc(MemberManagement userUid);
+    UserBookMarkingCountry getByUserUidAndOrderIdx(MemberManagement userUid,int orderIndex);
     void deleteByUserUidAndNationId(MemberManagement userUid, NationControl nationId);
+    List<UserBookMarkingCountry> findByNationId(NationControl nationControl);
 }

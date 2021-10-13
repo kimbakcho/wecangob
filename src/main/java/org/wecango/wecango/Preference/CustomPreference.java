@@ -15,5 +15,6 @@ public interface CustomPreference {
     String AWSSecretKey ();
     String AdminLoginPage();
     String AdminPage();
+    String CookieDomain();
 
 }

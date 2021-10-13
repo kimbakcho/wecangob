@@ -21,7 +21,7 @@ public class NationChangeAlarmService {
 
     public NationChangeAlarmResDto save(MemberManagement memberManagement, Integer nationId) {
 
-        NationControl nationControl = nationControlDataRepository.getById(nationId);
+        NationControl nationControl = nationControlDataRepository.findById(nationId).get();
 
         NationChangeAlarm nationChangeAlarm = NationChangeAlarm.builder()
                 .userUid(memberManagement)

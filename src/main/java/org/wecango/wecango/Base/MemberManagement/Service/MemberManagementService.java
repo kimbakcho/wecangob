@@ -15,7 +15,7 @@ public class MemberManagementService {
     final MemberManagementDataRepository memberManagementDataRepository;
 
     public MemberManagementSimpleResDto changeProfileImage(MemberManagement memberManagement, String imageUrl) {
-        MemberManagement byId = memberManagementDataRepository.getById(memberManagement.getUid());
+        MemberManagement byId = memberManagementDataRepository.findById(memberManagement.getUid()).get();
         byId.setProfileImage(imageUrl);
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(byId, MemberManagementSimpleResDto.class);

@@ -23,7 +23,7 @@ public class AlarmTravelFlagService {
 
     public AlarmTravelFlagResDto hasTravelFlag(MemberManagement memberManagement, Integer nationId) {
 
-        NationControl nationControl = nationControlDataRepository.getById(nationId);
+        NationControl nationControl = nationControlDataRepository.findById(nationId).get();
 
         Optional<AlarmTravelFlag> alarmTravelFlagOptional = alarmTravelFlagDataRepository.findByUserUidAndNationId(memberManagement, nationControl);
 
@@ -38,7 +38,7 @@ public class AlarmTravelFlagService {
 
     public void saveTravelFlag(MemberManagement memberManagement, Integer nationId) {
 
-        NationControl nationControl = nationControlDataRepository.getById(nationId);
+        NationControl nationControl = nationControlDataRepository.findById(nationId).get();
         AlarmTravelFlag alarmTravelFlag = AlarmTravelFlag.builder()
                 .nationId(nationControl)
                 .userUid(memberManagement)
@@ -47,7 +47,7 @@ public class AlarmTravelFlagService {
     }
 
     public void deleteTravelFlag(MemberManagement memberManagement, Integer nationId) {
-        NationControl nationControl = nationControlDataRepository.getById(nationId);
+        NationControl nationControl = nationControlDataRepository.findById(nationId).get();
         alarmTravelFlagDataRepository.deleteByUserUidAndNationId(memberManagement,nationControl);
     }
 }
