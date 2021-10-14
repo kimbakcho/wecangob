@@ -75,4 +75,19 @@ public class LocalPreference implements CustomPreference{
         return "localhost";
     }
 
+    @Override
+    public String kakaoClientId() {
+        return "42d9c5ccc2e2d85d76462e8c232a1b96";
+    }
+
+    @Override
+    public String googleClientId() {
+        return "115231264132-tln84m4cvfiv8ii4p7mgkgvtd41mii1j.apps.googleusercontent.com";
+    }
+
+    @Override
+    public String fireBaseAdminKeyPath() {
+        return "C:\\\\workproject\\\\wecangob\\\\wecango-firebase-adminsdk-k7rvq-015913cec3.json";
+    }
+
 }

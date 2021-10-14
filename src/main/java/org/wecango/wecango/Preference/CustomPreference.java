@@ -16,5 +16,7 @@ public interface CustomPreference {
     String AdminLoginPage();
     String AdminPage();
     String CookieDomain();
-
+    String kakaoClientId();
+    String googleClientId();
+    String fireBaseAdminKeyPath();
 }

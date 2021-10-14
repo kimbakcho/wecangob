@@ -1,9 +1,13 @@
 package org.wecango.wecango.Base.UserAlarm.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.wecango.wecango.Base.FireBase.FcmMessageReqDto;
+import org.wecango.wecango.Base.FireBase.FireBaseService;
 import org.wecango.wecango.Base.MemberManagement.Domain.MemberManagement;
 import org.wecango.wecango.Base.MemberManagement.Repository.MemberManagementDataRepository;
 import org.wecango.wecango.Base.NationControl.Domain.NationControl;
@@ -34,7 +38,9 @@ public class UserAlarmService {
 
     final NationControlDataRepository nationControlDataRepository;
 
-    public void sendAlarm(UserAlarmReqDto reqDto) {
+    final FireBaseService fireBaseService;
+
+    public void sendAlarm(UserAlarmReqDto reqDto) throws JsonProcessingException, FirebaseMessagingException {
 
         List<MemberManagement> sendList;
 
@@ -42,6 +48,13 @@ public class UserAlarmService {
 
         if(reqDto.getNationId() == null){
             sendList = memberManagementDataRepository.findAll();
+            FcmMessageReqDto fcmMessageReqDto = new FcmMessageReqDto();
+            fcmMessageReqDto.setMessage(reqDto.getMessage());
+            fcmMessageReqDto.setLinkUrl("https://app.wecango.org");
+            fcmMessageReqDto.setTitle("wecango");
+            fcmMessageReqDto.setMessage(reqDto.getMessage());
+            fcmMessageReqDto.setType("All");
+            fireBaseService.sendMessage(fcmMessageReqDto);
         }else {
             relativeNation = nationControlDataRepository.findById(reqDto.getNationId()).get();
             sendList = userBookMarkingCountryDataRepository.findByNationId(relativeNation)
@@ -61,6 +74,15 @@ public class UserAlarmService {
                     .build();
 
             userAlarmDataRepository.save(alarm);
+            FcmMessageReqDto fcmMessageReqDto = new FcmMessageReqDto();
+            fcmMessageReqDto.setMessage(reqDto.getMessage());
+            fcmMessageReqDto.setLinkUrl("https://app.wecango.org/BM004/"+relativeNation);
+            fcmMessageReqDto.setTitle("wecango");
+            fcmMessageReqDto.setMessage(reqDto.getMessage());
+            fcmMessageReqDto.setType("nation");
+            fcmMessageReqDto.setUid(user.getUid());
+
+            fireBaseService.sendMessage(fcmMessageReqDto);
         }
 
     }

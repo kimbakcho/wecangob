@@ -1,5 +1,7 @@
 package org.wecango.wecango.Base.UserAlarm.Controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +20,7 @@ public class UserAlarmController {
     final UserAlarmService userAlarmService;
 
     @PostMapping("/sendAlarm")
-    void sendAlarm(@RequestBody UserAlarmReqDto reqDto){
+    void sendAlarm(@RequestBody UserAlarmReqDto reqDto) throws JsonProcessingException, FirebaseMessagingException {
         userAlarmService.sendAlarm(reqDto);
     }
 

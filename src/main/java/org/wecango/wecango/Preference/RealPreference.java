@@ -74,4 +74,18 @@ public class RealPreference implements CustomPreference{
     public String CookieDomain() {
         return "wecango.org";
     }
+    @Override
+    public String kakaoClientId() {
+        return "5d05158ad07bfeafee833eef80a02935";
+    }
+
+    @Override
+    public String googleClientId() {
+        return "352727726767-nuvi74gsk08hf746r14c1i2j2s7l6d2o.apps.googleusercontent.com";
+    }
+
+    @Override
+    public String fireBaseAdminKeyPath() {
+        return "/home/ubuntu/wecango-firebase-adminsdk-k7rvq-015913cec3.json";
+    }
 }

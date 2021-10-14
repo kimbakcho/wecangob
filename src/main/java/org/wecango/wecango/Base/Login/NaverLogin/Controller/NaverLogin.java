@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
+import org.wecango.wecango.Base.Login.Service.NickNameService;
 import org.wecango.wecango.Base.MemberManagement.Domain.MemberManagement;
 import org.wecango.wecango.Base.MemberManagement.Repository.MemberManagementDataRepository;
 import org.wecango.wecango.Base.Login.Service.JwtTokenBuilder;
@@ -30,6 +31,8 @@ public class NaverLogin {
 
     final JwtTokenBuilder jwtTokenBuilder;
 
+    final NickNameService nickNameService;
+
     @GetMapping
     public void redirectLogin(String token,HttpServletResponse response) throws IOException {
         System.out.println(token);
@@ -51,10 +54,15 @@ public class NaverLogin {
             nickName = id;
         }
         String profile_image = (String)res.get("profile_image");
+
+        profile_image = profile_image.replaceAll("http","https");
+
         String name = (String)res.get("name");
         if(name == null || name.isEmpty()){
             name = id;
         }
+
+        name = nickNameService.getNickName(name);
 
         Optional<MemberManagement> byMember = memberManagementDataRepository.findById(id);
         MemberManagement member;

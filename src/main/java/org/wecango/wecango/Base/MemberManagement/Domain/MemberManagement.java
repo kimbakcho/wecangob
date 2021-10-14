@@ -43,4 +43,8 @@ public class MemberManagement {
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
 }

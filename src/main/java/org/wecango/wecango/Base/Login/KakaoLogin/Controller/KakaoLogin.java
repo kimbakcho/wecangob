@@ -8,6 +8,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
+import org.wecango.wecango.Base.Login.Service.NickNameService;
 import org.wecango.wecango.Base.MemberManagement.Domain.MemberManagement;
 import org.wecango.wecango.Base.MemberManagement.Repository.MemberManagementDataRepository;
 import org.wecango.wecango.Base.Login.Service.JwtTokenBuilder;
@@ -33,6 +34,8 @@ public class KakaoLogin {
 
     final JwtTokenBuilder jwtTokenBuilder;
 
+    final NickNameService nickNameService;
+
     @GetMapping("/test")
     public void test(HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException {
         response.getWriter().println("test");
@@ -47,7 +50,7 @@ public class KakaoLogin {
 
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
         parameters.add("grant_type", "authorization_code");
-        parameters.add("client_id", "42d9c5ccc2e2d85d76462e8c232a1b96");
+        parameters.add("client_id", customPreference.kakaoClientId());
         parameters.add("redirect_uri", customPreference.KakaoRedirect());
         parameters.add("code", code);
 
@@ -73,10 +76,17 @@ public class KakaoLogin {
         Map kakao_account = (Map)kakaoUserInfo.get("kakao_account");
         Map profile = (Map)kakao_account.get("profile");
         String nickname = (String) profile.get("nickname");
+
+
         if(nickname == null || nickname.isEmpty()){
             nickname = id;
         }
+
+        nickname = nickNameService.getNickName(nickname);
+
         String profile_image_url = (String) profile.get("profile_image_url");
+
+        profile_image_url = profile_image_url.replaceAll("http","https");
 
         Optional<MemberManagement> byMember = memberManagementDataRepository.findById(id);
         MemberManagement member;

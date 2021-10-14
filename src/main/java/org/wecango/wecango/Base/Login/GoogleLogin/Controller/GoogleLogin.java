@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.wecango.wecango.Base.Login.Service.NickNameService;
 import org.wecango.wecango.Base.MemberManagement.Domain.MemberManagement;
 import org.wecango.wecango.Base.MemberManagement.Repository.MemberManagementDataRepository;
 import org.wecango.wecango.Base.Login.Service.JwtTokenBuilder;
@@ -32,14 +33,14 @@ public class GoogleLogin {
 
     final JwtTokenBuilder jwtTokenBuilder;
 
-
+    final NickNameService nickNameService;
 
     @GetMapping
     public void redirectLogin(String token, HttpServletResponse response) throws GeneralSecurityException, IOException {
         System.out.println(token);
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
                 // Specify the CLIENT_ID of the app that accesses the backend:
-                .setAudience(Collections.singletonList("115231264132-tln84m4cvfiv8ii4p7mgkgvtd41mii1j.apps.googleusercontent.com"))
+                .setAudience(Collections.singletonList(customPreference.googleClientId()))
                 // Or, if multiple clients access the backend:
                 //.setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
                 .build();
@@ -58,11 +59,14 @@ public class GoogleLogin {
             if(name== null || name.isEmpty()){
                 name= id;
             }
+
+            name = nickNameService.getNickName(name);
+
             String pictureUrl = (String) payload.get("picture");
             String locale = (String) payload.get("locale");
             String familyName = (String) payload.get("family_name");
             String givenName = (String) payload.get("given_name");
-
+            pictureUrl = pictureUrl.replaceAll("http","https");
 
             Optional<MemberManagement> byMember = memberManagementDataRepository.findById(id);
             MemberManagement member;
