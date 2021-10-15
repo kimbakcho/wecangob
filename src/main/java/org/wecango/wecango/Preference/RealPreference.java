@@ -47,7 +47,7 @@ public class RealPreference implements CustomPreference{
 
     @Override
     public String snsLoginRedirect() {
-        return "https://app.wecango.org";
+        return "https://wecango.org";
     }
 
     @Override
@@ -62,12 +62,12 @@ public class RealPreference implements CustomPreference{
 
     @Override
     public String AdminLoginPage() {
-        return "https://app.wecango.org/AdminLogin";
+        return "https://wecango.org/AdminLogin";
     }
 
     @Override
     public String AdminPage() {
-        return "https://app.wecango.org/WCAdmin";
+        return "https://wecango.org/WCAdmin";
     }
 
     @Override

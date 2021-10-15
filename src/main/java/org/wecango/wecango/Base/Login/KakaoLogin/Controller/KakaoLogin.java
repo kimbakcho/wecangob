@@ -85,8 +85,10 @@ public class KakaoLogin {
         nickname = nickNameService.getNickName(nickname);
 
         String profile_image_url = (String) profile.get("profile_image_url");
+        if(profile_image_url != null){
+            profile_image_url = profile_image_url.replaceAll("http","https");
+        }
 
-        profile_image_url = profile_image_url.replaceAll("http","https");
 
         Optional<MemberManagement> byMember = memberManagementDataRepository.findById(id);
         MemberManagement member;

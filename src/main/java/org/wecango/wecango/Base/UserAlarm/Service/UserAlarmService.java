@@ -61,29 +61,30 @@ public class UserAlarmService {
                     .stream().map(x -> {
                         return x.getUserUid();
                     }).collect(Collectors.toList());
+            for (MemberManagement user : sendList ) {
+
+                UserAlarm alarm = UserAlarm.builder()
+                        .userUid(user)
+                        .message(reqDto.getMessage())
+                        .readFlag(false)
+                        .sendDateTime(LocalDateTime.now())
+                        .relationNationId(relativeNation)
+                        .build();
+
+                userAlarmDataRepository.save(alarm);
+                FcmMessageReqDto fcmMessageReqDto = new FcmMessageReqDto();
+                fcmMessageReqDto.setMessage(reqDto.getMessage());
+                fcmMessageReqDto.setLinkUrl("https://wecango.org/BM004/"+relativeNation.getId());
+                fcmMessageReqDto.setTitle("wecango");
+                fcmMessageReqDto.setMessage(reqDto.getMessage());
+                fcmMessageReqDto.setType("nation");
+                fcmMessageReqDto.setUid(user.getUid());
+
+                fireBaseService.sendMessage(fcmMessageReqDto);
+            }
         }
 
-        for (MemberManagement user : sendList ) {
 
-            UserAlarm alarm = UserAlarm.builder()
-                    .userUid(user)
-                    .message(reqDto.getMessage())
-                    .readFlag(false)
-                    .sendDateTime(LocalDateTime.now())
-                    .relationNationId(relativeNation)
-                    .build();
-
-            userAlarmDataRepository.save(alarm);
-            FcmMessageReqDto fcmMessageReqDto = new FcmMessageReqDto();
-            fcmMessageReqDto.setMessage(reqDto.getMessage());
-            fcmMessageReqDto.setLinkUrl("https://app.wecango.org/BM004/"+relativeNation);
-            fcmMessageReqDto.setTitle("wecango");
-            fcmMessageReqDto.setMessage(reqDto.getMessage());
-            fcmMessageReqDto.setType("nation");
-            fcmMessageReqDto.setUid(user.getUid());
-
-            fireBaseService.sendMessage(fcmMessageReqDto);
-        }
 
     }
 

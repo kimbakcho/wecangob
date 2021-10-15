@@ -41,16 +41,20 @@ public class FireBaseService {
         Message message =null;
         if(!reqDto.getType().equals("All") ){
             MemberManagement member = memberManagementDataRepository.getById(reqDto.getUid());
-            message = Message.builder()
-                    .putData("payload",jsonDto)
-                    .setToken(member.getFcmToken())
-                    .build();
+            if((member.getFcmToken() != null) && (!member.getFcmToken().isEmpty())){
+                message = Message.builder()
+                        .putData("payload",jsonDto)
+                        .setToken(member.getFcmToken())
+                        .build();
+                FirebaseMessaging.getInstance().send(message);
+            }
+
         }else {
             message = Message.builder()
                     .putData("payload",jsonDto)
                     .setTopic("all")
                     .build();
+            FirebaseMessaging.getInstance().send(message);
         }
-        String send = FirebaseMessaging.getInstance().send(message);
     }
 }

@@ -54,8 +54,9 @@ public class NaverLogin {
             nickName = id;
         }
         String profile_image = (String)res.get("profile_image");
-
-        profile_image = profile_image.replaceAll("http","https");
+        if(profile_image != null){
+            profile_image = profile_image.replaceAll("http","https");
+        }
 
         String name = (String)res.get("name");
         if(name == null || name.isEmpty()){

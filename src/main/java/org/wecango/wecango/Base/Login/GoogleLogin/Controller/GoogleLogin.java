@@ -66,7 +66,9 @@ public class GoogleLogin {
             String locale = (String) payload.get("locale");
             String familyName = (String) payload.get("family_name");
             String givenName = (String) payload.get("given_name");
-            pictureUrl = pictureUrl.replaceAll("http","https");
+            if(pictureUrl != null){
+                pictureUrl = pictureUrl.replaceAll("http","https");
+            }
 
             Optional<MemberManagement> byMember = memberManagementDataRepository.findById(id);
             MemberManagement member;
