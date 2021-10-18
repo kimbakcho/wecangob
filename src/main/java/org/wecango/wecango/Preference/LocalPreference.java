@@ -10,9 +10,8 @@ import java.util.Properties;
 public class LocalPreference implements CustomPreference{
     @Override
     public String getDataSourceUrl() {
-        return "jdbc:mysql://192.168.0.4:3306/wecango?serverTimezone=Asia/Seoul";
+        return "jdbc:mysql://ls-54b4e4c1dbf6e57414075808c604f5920b3c2f01.ceepas8p7edl.ap-northeast-2.rds.amazonaws.com/wecango?serverTimezone=Asia/Seoul";
     }
-
     @Override
     public Properties getJPAProperties() {
         Properties properties = new Properties();
@@ -27,12 +26,12 @@ public class LocalPreference implements CustomPreference{
 
     @Override
     public String getDataSourceUserName() {
-        return "wecango";
+        return "dbmasteruser";
     }
 
     @Override
     public String getDataSourcePW() {
-        return "wecango";
+        return "wecango1234";
     }
 
     @Override

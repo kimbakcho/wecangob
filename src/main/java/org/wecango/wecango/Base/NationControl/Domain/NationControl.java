@@ -1,19 +1,24 @@
 package org.wecango.wecango.Base.NationControl.Domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.wecango.wecango.Base.ImmigrationStatus.Domain.ImmigrationStatus;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name="nationControl")
 @Getter
 @Setter
-public class NationControl {
+@NoArgsConstructor
+@AllArgsConstructor
+public class NationControl implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-
+    @Column(unique=true)
     String nationName;
     String isoCode;
     String displayFlag;

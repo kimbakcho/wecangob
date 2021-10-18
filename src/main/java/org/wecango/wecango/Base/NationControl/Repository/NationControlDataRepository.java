@@ -5,4 +5,6 @@ import org.wecango.wecango.Base.NationControl.Domain.NationControl;
 
 public interface NationControlDataRepository extends JpaRepository<NationControl,Integer> {
 
+    NationControl getByNationName(String nationName);
+
 }
