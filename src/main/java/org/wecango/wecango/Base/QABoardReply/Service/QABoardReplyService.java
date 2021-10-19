@@ -3,6 +3,7 @@ package org.wecango.wecango.Base.QABoardReply.Service;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.wecango.wecango.Base.MemberManagement.Domain.MemberManagement;
 import org.wecango.wecango.Base.MemberManagement.Repository.MemberManagementDataRepository;
 import org.wecango.wecango.Base.NationControl.Domain.NationControl;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class QABoardReplyService {
 
@@ -48,6 +50,8 @@ public class QABoardReplyService {
                 .build();
 
         QABoardReply save = qaBoardReplyDataRepository.save(qaBoardReply);
+
+        qaBoard.setReplyCount(qaBoard.getReplyCount() + 1);
 
         ModelMapper modelMapper = new ModelMapper();
 

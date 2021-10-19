@@ -2,15 +2,19 @@ package org.wecango.wecango.Base.QABoard.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wecango.wecango.Base.MemberManagement.Domain.MemberManagement;
 import org.wecango.wecango.Base.NationControl.Domain.NationControl;
 import org.wecango.wecango.Base.NationControl.Repository.NationControlDataRepository;
 import org.wecango.wecango.Base.QABoard.Domain.QABoard;
+import org.wecango.wecango.Base.QABoard.Dto.QABoardFilterReqDto;
 import org.wecango.wecango.Base.QABoard.Dto.QABoardInsertDto;
 import org.wecango.wecango.Base.QABoard.Dto.QABoardResDto;
 import org.wecango.wecango.Base.QABoard.Repository.QABoardDataRepository;
+import org.wecango.wecango.Base.QABoard.Repository.QABoardQueryRepository;
 
 import java.time.LocalDateTime;
 
@@ -21,6 +25,7 @@ public class QABoardService {
 
     final QABoardDataRepository qaBoardDataRepository;
     final NationControlDataRepository nationControlDataRepository;
+    final QABoardQueryRepository qaBoardQueryRepository;
 
     public QABoardResDto insert(MemberManagement memberManagement, QABoardInsertDto qaBoardInsertDto){
         ModelMapper modelMapper = new ModelMapper();
@@ -46,5 +51,19 @@ public class QABoardService {
         ModelMapper modelMapper = new ModelMapper();
         QABoard byId = qaBoardDataRepository.getById(id);
         return modelMapper.map(byId,QABoardResDto.class);
+    }
+
+    public void viewCount(Integer id) {
+        QABoard byId = qaBoardDataRepository.getById(id);
+        byId.setView(byId.getView()+1);
+    }
+
+    public Page<QABoardResDto> getFilterDoc(QABoardFilterReqDto reqDto, Pageable pageable) {
+        Page<QABoard> filterDoc = qaBoardQueryRepository.getFilterDoc(reqDto, pageable);
+        ModelMapper modelMapper = new ModelMapper();
+        Page<QABoardResDto> resDtos = filterDoc.map(x -> {
+            return modelMapper.map(x, QABoardResDto.class);
+        });
+        return resDtos;
     }
 }
