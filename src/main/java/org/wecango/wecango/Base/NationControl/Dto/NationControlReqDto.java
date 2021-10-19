@@ -12,7 +12,6 @@ public class NationControlReqDto {
     Boolean covidTest;
     List<String> benefitsVaccination;
     Boolean possibleExempted;
-    Integer mandatoryQuarantineFrom;
-    Integer mandatoryQuarantineTo;
+    List<String> mandatoryQuarantine;
 
 }

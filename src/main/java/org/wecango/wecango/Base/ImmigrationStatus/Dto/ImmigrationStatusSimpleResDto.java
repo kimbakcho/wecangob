@@ -11,7 +11,7 @@ public class ImmigrationStatusSimpleResDto {
     NationControlResDto nation;
     String continent;
     Boolean travelFlag;
-    Integer mandatoryQuarantine;
+    String mandatoryQuarantine;
     LocalDateTime updateDateTime;
     Boolean recommendedCountry;
     Integer recommendedCountryOrder;

@@ -22,7 +22,7 @@ public class ImmigrationStatus {
     NationControl nationId;
     String continent;
     Boolean travelFlag;
-    Integer mandatoryQuarantine;
+    String mandatoryQuarantine;
     LocalDateTime updateDateTime;
     Boolean recommendedCountry;
     Integer recommendedCountryOrder;

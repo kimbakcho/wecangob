@@ -138,7 +138,7 @@ public class ImmigrationStatusService {
             updateItem.setVisaFlag(reqDto.getVisaFlag());
         }
         if(reqDto.getCovidTest() != null){
-            updateItem.setVisaFlag(reqDto.getCovidTest());
+            updateItem.setCovidTest(reqDto.getCovidTest());
         }
         if(reqDto.getBenefitsVaccination() != null){
             updateItem.setBenefitsVaccination(reqDto.getBenefitsVaccination());

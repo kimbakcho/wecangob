@@ -9,7 +9,7 @@ public class ImmigrationStatusUpdateReqDto {
     String nationFlagImageFileName;
     String continent;
     Boolean travelFlag;
-    Integer mandatoryQuarantine;
+    String mandatoryQuarantine;
     Boolean recommendedCountry;
     Integer recommendedCountryOrder;
     String recommendedCountryImageUrl;

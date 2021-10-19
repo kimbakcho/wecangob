@@ -31,6 +31,7 @@ public class NationControlQueryRepository {
         QImmigrationStatus qImmigrationStatus = QImmigrationStatus.immigrationStatus;
 
         BooleanBuilder builder = new BooleanBuilder();
+        builder.and(qImmigrationStatus.nationId.displayFlag.isTrue());
 
         if (reqDto.getContinent() != null && reqDto.getContinent().size() > 0) {
             builder.and(qImmigrationStatus.continent.in(reqDto.getContinent()));
@@ -44,7 +45,7 @@ public class NationControlQueryRepository {
             builder.and(qImmigrationStatus.possibleExempted.eq(reqDto.getPossibleExempted()));
         }
 
-        if (reqDto.getBenefitsVaccination() != null) {
+        if ((reqDto.getBenefitsVaccination()) != null && (reqDto.getBenefitsVaccination().size() > 0)) {
             builder.and(qImmigrationStatus.benefitsVaccination.in(reqDto.getBenefitsVaccination()));
         }
 
@@ -56,8 +57,8 @@ public class NationControlQueryRepository {
             builder.and(qImmigrationStatus.visaFlag.eq(reqDto.getVisaFlag()));
         }
 
-        if (reqDto.getMandatoryQuarantineFrom() != null && reqDto.getMandatoryQuarantineTo() != null) {
-            builder.and(qImmigrationStatus.mandatoryQuarantine.between(reqDto.getMandatoryQuarantineFrom(), reqDto.getMandatoryQuarantineTo()));
+        if ((reqDto.getMandatoryQuarantine() != null) && (reqDto.getMandatoryQuarantine().size() > 0)) {
+            builder.and(qImmigrationStatus.mandatoryQuarantine.in(reqDto.getMandatoryQuarantine()));
         }
 
 

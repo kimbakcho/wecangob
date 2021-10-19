@@ -9,7 +9,7 @@ public class NationControlResDto {
     int id;
     String nationName;
     String isoCode;
-    String displayFlag;
+    Boolean displayFlag;
     String flagImage;
     String fileName;
 }

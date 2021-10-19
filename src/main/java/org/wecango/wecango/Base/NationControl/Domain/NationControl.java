@@ -21,7 +21,7 @@ public class NationControl implements Serializable {
     @Column(unique=true)
     String nationName;
     String isoCode;
-    String displayFlag;
+    Boolean displayFlag;
     String flagImage;
     String fileName;
 

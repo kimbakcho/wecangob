@@ -68,6 +68,9 @@ public class UserBookMarkingCountryService {
 
     public List<UserBookMarkingCountryResDto> bookMarkingList(MemberManagement memberManagement) {
         List<UserBookMarkingCountry> byUserUid = userBookMarkingCountryDataRepository.findByUserUidOrderByOrderIdxAsc(memberManagement);
+        byUserUid = byUserUid.stream().filter(x -> {
+            return x.getNationId().getDisplayFlag();
+        }).collect(Collectors.toList());
         ModelMapper modelMapper = new ModelMapper();
         List<UserBookMarkingCountryResDto> markingList = byUserUid.stream().map(
                 x -> {
