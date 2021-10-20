@@ -30,9 +30,20 @@ public class MemberManagementController {
         }
     }
 
+    @GetMapping("/checkNickName")
+    public boolean checkNickName(String nickName){
+        return memberManagementService.checkNickName(nickName);
+    }
+
     @PostMapping("/fcmToken")
     public String updateFcmToken(@RequestBody FcmTokenUpdateReqDto fcmTokenUpdateReqDto) throws FirebaseMessagingException {
         return memberManagementService.updateFcmToken(fcmTokenUpdateReqDto);
+    }
+
+    @PostMapping("/changeNickName")
+    public void changeNickName(@AuthenticationPrincipal(expression = "memberManagement")MemberManagement memberManagement,
+                                 String nickName){
+        memberManagementService.changeNickName(memberManagement,nickName);
     }
 
     @PostMapping("/changeProfileImage")

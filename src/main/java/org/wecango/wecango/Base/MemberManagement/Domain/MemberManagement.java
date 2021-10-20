@@ -47,4 +47,8 @@ public class MemberManagement {
     public void setFcmToken(String fcmToken) {
         this.fcmToken = fcmToken;
     }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
 }

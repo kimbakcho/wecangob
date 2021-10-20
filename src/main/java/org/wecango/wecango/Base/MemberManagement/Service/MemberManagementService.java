@@ -35,4 +35,13 @@ public class MemberManagementService {
         FirebaseMessaging.getInstance().subscribeToTopic(tokens,"all");
         return "ok";
     }
+
+    public boolean checkNickName(String nickName) {
+        return memberManagementDataRepository.existsByNickName(nickName);
+    }
+
+    public void changeNickName(MemberManagement memberManagement, String nickName) {
+        MemberManagement byId = memberManagementDataRepository.getById(memberManagement.getUid());
+        byId.setNickName(nickName);
+    }
 }
