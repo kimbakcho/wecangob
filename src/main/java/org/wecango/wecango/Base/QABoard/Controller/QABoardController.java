@@ -55,4 +55,12 @@ public class QABoardController {
         return qaBoardService.getFilterDoc(reqDto, pageable);
     }
 
+    @PostMapping("/changeRepresentative")
+    void changeRepresentative(@AuthenticationPrincipal(expression = "memberManagement") MemberManagement memberManagement,
+            Integer docNumber,Integer changeOrder) {
+        if(memberManagement.getRole().indexOf("Admin") >= 0){
+            qaBoardService.changeRepresentative(docNumber,changeOrder);
+        }
+    }
+
 }

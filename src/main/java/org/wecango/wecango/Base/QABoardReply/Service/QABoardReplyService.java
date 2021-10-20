@@ -67,4 +67,10 @@ public class QABoardReplyService {
         }).collect(Collectors.toList());
         return collect;
     }
+
+
+    public void changeRepresentativeComment(Integer replyNumber, Integer changeOrder) {
+        QABoardReply byId = qaBoardReplyDataRepository.getById(replyNumber);
+        byId.setRepresentativeComment(changeOrder);
+    }
 }

@@ -26,6 +26,13 @@ public class QABoardReplyController {
     public QABoardReplyResDto insert(@AuthenticationPrincipal(expression = "memberManagement") MemberManagement memberManagement,
                                      @RequestBody QABoardReplyInsertReqDto reqDto){
         return qaBoardReplyService.insert(memberManagement,reqDto);
+    }
 
+    @PostMapping("/changeRepresentativeComment")
+    public void changeRepresentativeComment(@AuthenticationPrincipal(expression = "memberManagement") MemberManagement memberManagement,
+                                            Integer replyNumber,Integer changeOrder){
+        if(memberManagement.getRole().indexOf("Admin") >= 0){
+            qaBoardReplyService.changeRepresentativeComment(replyNumber,changeOrder);
+        }
     }
 }

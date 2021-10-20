@@ -84,4 +84,9 @@ public class QABoardService {
         });
         return resDtos;
     }
+
+    public void changeRepresentative(Integer docNumber, Integer changeOrder) {
+        QABoard byId = qaBoardDataRepository.getById(docNumber);
+        byId.setRepresentative(changeOrder);
+    }
 }
