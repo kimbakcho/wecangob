@@ -39,25 +39,33 @@ public class QABoardQueryRepository  extends QuerydslRepositorySupport {
     }
 
     public Page<QABoard> getFilterDoc(QABoardFilterReqDto reqDto,Pageable pageable) {
-
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         if(reqDto.getMode() != null){
             if(reqDto.getMode().equals("title")){
-                booleanBuilder.and(qABoard.title.contains(reqDto.getTitle()));
+                if((reqDto.getTitle() != null) && !reqDto.getTitle().isEmpty()){
+                    booleanBuilder.and(qABoard.title.contains(reqDto.getTitle()));
+                }
             }else if(reqDto.getMode().equals("writer")){
-                MemberManagement writer = MemberManagement.builder()
-                        .uid(reqDto.getWriter())
-                        .build();
-                booleanBuilder.and(qABoard.writer.eq(writer));
+                if((reqDto.getWriter() != null) && !reqDto.getWriter().isEmpty()){
+                    MemberManagement writer = MemberManagement.builder()
+                            .uid(reqDto.getWriter())
+                            .build();
+                    booleanBuilder.and(qABoard.writer.eq(writer));
+                }
             }else if(reqDto.getMode().equals("content")){
-                booleanBuilder.and(qABoard.contentText.contains(reqDto.getContent()));
+                if((reqDto.getContent() != null) && !reqDto.getContent().isEmpty()){
+                    booleanBuilder.and(qABoard.contentText.contains(reqDto.getContent()));
+                }
             }else if(reqDto.getMode().equals("titleOrContent")){
-                booleanBuilder.and(qABoard.title.contains(reqDto.getTitle())
-                        .or(qABoard.contentText.contains(reqDto.getContent()))
-                );
+                if((reqDto.getTitle() != null) || (reqDto.getContent() != null)){
+                    booleanBuilder.and(qABoard.title.contains(reqDto.getTitle())
+                            .or(qABoard.contentText.contains(reqDto.getContent())));
+                }
             }else if(reqDto.getMode().equals("nation")){
-                NationControl nation = nationControlDataRepository.getByNationName(reqDto.getNation());
-                booleanBuilder.and(qABoard.nationName.eq(nation));
+                if(reqDto.getNation() != null){
+                    NationControl nation = nationControlDataRepository.getById(reqDto.getNation());
+                    booleanBuilder.and(qABoard.nationName.id.eq(nation.getId()));
+                }
             }
         }
 

@@ -11,8 +11,8 @@ public class QABoardFilterReqDto {
     String title;
     String writer;
     String content;
-    String nation;
+    Integer nation;
     String category;
     PageReqDto pageReqDto;
-
+    Boolean withComment;
 }

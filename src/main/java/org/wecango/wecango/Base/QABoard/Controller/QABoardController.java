@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.wecango.wecango.Base.MemberManagement.Domain.MemberManagement;
+import org.wecango.wecango.Base.QABoard.Dto.QABoardComResDto;
 import org.wecango.wecango.Base.QABoard.Dto.QABoardFilterReqDto;
 import org.wecango.wecango.Base.QABoard.Dto.QABoardInsertDto;
 import org.wecango.wecango.Base.QABoard.Dto.QABoardResDto;
@@ -38,7 +39,7 @@ public class QABoardController {
     }
 
     @PostMapping("/getFilterDoc")
-    Page<QABoardResDto> getFilterDoc(@RequestBody QABoardFilterReqDto reqDto) {
+    Page<QABoardComResDto> getFilterDoc(@RequestBody QABoardFilterReqDto reqDto) {
 
         List<Sort.Order> sorts = reqDto.getPageReqDto()
                 .getSorts()

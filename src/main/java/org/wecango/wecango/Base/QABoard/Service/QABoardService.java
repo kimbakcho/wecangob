@@ -10,13 +10,19 @@ import org.wecango.wecango.Base.MemberManagement.Domain.MemberManagement;
 import org.wecango.wecango.Base.NationControl.Domain.NationControl;
 import org.wecango.wecango.Base.NationControl.Repository.NationControlDataRepository;
 import org.wecango.wecango.Base.QABoard.Domain.QABoard;
+import org.wecango.wecango.Base.QABoard.Dto.QABoardComResDto;
 import org.wecango.wecango.Base.QABoard.Dto.QABoardFilterReqDto;
 import org.wecango.wecango.Base.QABoard.Dto.QABoardInsertDto;
 import org.wecango.wecango.Base.QABoard.Dto.QABoardResDto;
 import org.wecango.wecango.Base.QABoard.Repository.QABoardDataRepository;
 import org.wecango.wecango.Base.QABoard.Repository.QABoardQueryRepository;
+import org.wecango.wecango.Base.QABoardReply.Domain.QABoardReply;
+import org.wecango.wecango.Base.QABoardReply.Dto.QABoardReplyResDto;
+import org.wecango.wecango.Base.QABoardReply.Repository.QABoardReplyDataRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +32,7 @@ public class QABoardService {
     final QABoardDataRepository qaBoardDataRepository;
     final NationControlDataRepository nationControlDataRepository;
     final QABoardQueryRepository qaBoardQueryRepository;
+    final QABoardReplyDataRepository qaBoardReplyDataRepository;
 
     public QABoardResDto insert(MemberManagement memberManagement, QABoardInsertDto qaBoardInsertDto){
         ModelMapper modelMapper = new ModelMapper();
@@ -58,11 +65,22 @@ public class QABoardService {
         byId.setView(byId.getView()+1);
     }
 
-    public Page<QABoardResDto> getFilterDoc(QABoardFilterReqDto reqDto, Pageable pageable) {
+    public Page<QABoardComResDto> getFilterDoc(QABoardFilterReqDto reqDto, Pageable pageable) {
         Page<QABoard> filterDoc = qaBoardQueryRepository.getFilterDoc(reqDto, pageable);
         ModelMapper modelMapper = new ModelMapper();
-        Page<QABoardResDto> resDtos = filterDoc.map(x -> {
-            return modelMapper.map(x, QABoardResDto.class);
+        Page<QABoardComResDto> resDtos = filterDoc.map(x -> {
+            QABoardComResDto boardResDto = modelMapper.map(x, QABoardComResDto.class);
+            if(reqDto.getWithComment()){
+                QABoard qaBoard = qaBoardDataRepository.getById(x.getId());
+                System.out.println(qaBoard.getId());
+                List<QABoardReply> replyList = qaBoardReplyDataRepository
+                        .findFirstByQaBoardIdOrderByRepresentativeCommentDescUpdateDateTimeAsc(qaBoard);
+                if(replyList.size()> 0){
+                    QABoardReply qaBoardReply = replyList.get(0);
+                    boardResDto.setQaBoardReplyResDto(modelMapper.map(qaBoardReply, QABoardReplyResDto.class));
+                }
+            }
+            return boardResDto;
         });
         return resDtos;
     }
