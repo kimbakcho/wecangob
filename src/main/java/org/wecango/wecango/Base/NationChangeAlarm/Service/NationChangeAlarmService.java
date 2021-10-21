@@ -25,7 +25,7 @@ public class NationChangeAlarmService {
 
         NationChangeAlarm nationChangeAlarm = NationChangeAlarm.builder()
                 .userUid(memberManagement)
-                .nationControl(nationControl)
+                .nationId(nationControl)
                 .build();
 
         ModelMapper modelMapper = new ModelMapper();

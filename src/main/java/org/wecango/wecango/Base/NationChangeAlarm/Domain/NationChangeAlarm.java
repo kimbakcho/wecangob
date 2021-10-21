@@ -28,7 +28,7 @@ public class NationChangeAlarm {
 
     @JoinColumn(name = "nationId")
     @ManyToOne
-    NationControl nationControl;
+    NationControl nationId;
 
     LocalDateTime createTime;
 
