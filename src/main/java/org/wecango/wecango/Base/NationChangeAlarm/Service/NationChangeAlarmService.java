@@ -10,6 +10,8 @@ import org.wecango.wecango.Base.NationChangeAlarm.Repository.NationChangeAlarmDa
 import org.wecango.wecango.Base.NationControl.Domain.NationControl;
 import org.wecango.wecango.Base.NationControl.Repository.NationControlDataRepository;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class NationChangeAlarmService {
@@ -26,6 +28,7 @@ public class NationChangeAlarmService {
         NationChangeAlarm nationChangeAlarm = NationChangeAlarm.builder()
                 .userUid(memberManagement)
                 .nationId(nationControl)
+                .createTime(LocalDateTime.now())
                 .build();
 
         ModelMapper modelMapper = new ModelMapper();
