@@ -115,8 +115,10 @@ public class ImmigrationStatusService {
         List<NationChangeAlarm> alarmUsers = nationChangeAlarmDataRepository.findByNationId(updateItem.getNationId());
 
         if(reqDto.getNationFlagImageUrl() != null ){
-            updateItem.getNationId().setFlagImage(reqDto.getNationFlagImageUrl() );
-            updateItem.getNationId().setFileName(reqDto.getNationFlagImageFileName());
+            if(updateItem.getNationId() != null){
+                updateItem.getNationId().setFlagImage(reqDto.getNationFlagImageUrl() );
+                updateItem.getNationId().setFileName(reqDto.getNationFlagImageFileName());
+            }
         }
         if(reqDto.getContinent() != null){
             updateItem.setContinent(reqDto.getContinent());
@@ -130,7 +132,7 @@ public class ImmigrationStatusService {
             updateItem.setTravelFlag(reqDto.getTravelFlag());
         }
         if(reqDto.getMandatoryQuarantine() != null){
-            if(!updateItem.getMandatoryQuarantine().equals(reqDto.getMandatoryQuarantine())){
+            if(updateItem.getMandatoryQuarantine() != null && !updateItem.getMandatoryQuarantine().equals(reqDto.getMandatoryQuarantine())){
                 sendAlarmMessage(updateItem.getNationId().getNationName(),"의무 격리",
                         reqDto.getMandatoryQuarantine(),updateItem.getNationId().getId(),alarmUsers);
             }
@@ -148,7 +150,7 @@ public class ImmigrationStatusService {
             updateItem.setRecommendedCountryImageFileName(reqDto.getRecommendedCountryImageFileName());
         }
         if(reqDto.getVaccinationFlag()!=null){
-            if(updateItem.getVaccinationFlag()!=reqDto.getVaccinationFlag()){
+            if(updateItem.getVaccinationFlag()!=null && !updateItem.getVaccinationFlag().equals(reqDto.getVaccinationFlag()) ){
                 String optionName = "" ;
                 if(reqDto.getVaccinationFlag() == 0){
                     optionName = "무관";
@@ -164,7 +166,7 @@ public class ImmigrationStatusService {
 
         }
         if(reqDto.getPcrTest() != null){
-            if(!updateItem.getPcrTest().equals(reqDto.getPcrTest()) ){
+            if( updateItem.getPcrTest() != null && !updateItem.getPcrTest().equals(reqDto.getPcrTest()) ){
                 sendAlarmMessage(updateItem.getNationId().getNationName(),"PCR 검사",
                         reqDto.getPcrTest(),updateItem.getNationId().getId(),alarmUsers);
             }
@@ -172,14 +174,15 @@ public class ImmigrationStatusService {
 
         }
         if(reqDto.getMandatoryQuarantineText() != null){
-            if(!updateItem.getMandatoryQuarantineText().equals(reqDto.getMandatoryQuarantineText())){
+            if(updateItem.getMandatoryQuarantineText() != null &&
+                    !updateItem.getMandatoryQuarantineText().equals(reqDto.getMandatoryQuarantineText())){
                 sendAlarmMessage(updateItem.getNationId().getNationName(),"의무 격리",
                         reqDto.getMandatoryQuarantineText(),updateItem.getNationId().getId() ,alarmUsers);
             }
             updateItem.setMandatoryQuarantineText(reqDto.getMandatoryQuarantineText());
 
         }
-        if(reqDto.getVisaFlag() != null){
+        if(reqDto.getVisaFlag() != null ){
             if(updateItem.getVisaFlag() != reqDto.getVisaFlag()){
                 String optionName = reqDto.getVisaFlag() ? "필요" : "불필요";
                 sendAlarmMessage(updateItem.getNationId().getNationName(),"Visa 필요 유무",
@@ -187,7 +190,7 @@ public class ImmigrationStatusService {
             }
             updateItem.setVisaFlag(reqDto.getVisaFlag());
         }
-        if(reqDto.getCovidTest() != null){
+        if(reqDto.getCovidTest() != null ){
             if(updateItem.getCovidTest() != reqDto.getCovidTest()){
                 String optionName = reqDto.getCovidTest() ? "필요" : "불필요";
                 sendAlarmMessage(updateItem.getNationId().getNationName(),"코로나 검사",
@@ -195,8 +198,9 @@ public class ImmigrationStatusService {
             }
             updateItem.setCovidTest(reqDto.getCovidTest());
         }
-        if(reqDto.getBenefitsVaccination() != null){
-            if(updateItem.getBenefitsVaccination().equals(reqDto.getBenefitsVaccination())){
+        if(reqDto.getBenefitsVaccination() != null ){
+            if(updateItem.getBenefitsVaccination() != null &&
+                    updateItem.getBenefitsVaccination().equals(reqDto.getBenefitsVaccination())){
                 sendAlarmMessage(updateItem.getNationId().getNationName(),"백신 접종자 혜택",
                         reqDto.getBenefitsVaccination(),updateItem.getNationId().getId() ,alarmUsers);
             }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.wecango.wecango.Base.AdminContent.Domain.AdminContent;
 import org.wecango.wecango.Base.AdminContent.Dto.AdminContentResDto;
 import org.wecango.wecango.Base.AdminContent.Dto.AdminContentSaveReqDto;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AdminContentService {
 

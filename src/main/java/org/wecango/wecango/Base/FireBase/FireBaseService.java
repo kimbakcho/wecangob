@@ -5,9 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
-import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.*;
 import org.springframework.stereotype.Service;
 import org.wecango.wecango.Base.MemberManagement.Domain.MemberManagement;
 import org.wecango.wecango.Base.MemberManagement.Repository.MemberManagementDataRepository;
@@ -39,12 +37,22 @@ public class FireBaseService {
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonDto = objectMapper.writeValueAsString(reqDto);
         Message message =null;
+
         if(!reqDto.getType().equals("All") ){
             MemberManagement member = memberManagementDataRepository.getById(reqDto.getUid());
             if((member.getFcmToken() != null) && (!member.getFcmToken().isEmpty())){
+
                 message = Message.builder()
                         .putData("payload",jsonDto)
                         .setToken(member.getFcmToken())
+                        .setApnsConfig(
+                                ApnsConfig.builder()
+                                        .setAps(Aps.builder()
+                                                .setContentAvailable(true)
+                                                .putCustomData("payload",jsonDto)
+                                                .build())
+                                        .build()
+                        )
                         .build();
                 FirebaseMessaging.getInstance().send(message);
             }
