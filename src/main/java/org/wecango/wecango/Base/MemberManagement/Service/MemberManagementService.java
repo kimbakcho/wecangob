@@ -18,6 +18,8 @@ import org.wecango.wecango.Base.MemberManagement.Repository.MemberManagementData
 import org.wecango.wecango.Base.MemberManagement.Repository.MemberManagementQueryRepository;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -55,10 +57,13 @@ public class MemberManagementService {
         Page<MemberManagement> memberList = memberManagementQueryRepository.getMemberList(memberSearchReqDto, pageable);
         ModelMapper modelMapper = new ModelMapper();
         Page<MemberManagementResDto> resDtos = memberList.map(x -> {
-            x.setPassword("");
             return modelMapper.map(x, MemberManagementResDto.class);
         });
-        return resDtos;
+        Page<MemberManagementResDto> collect = resDtos.map(x -> {
+            x.setPassword("");
+            return x;
+        });
+        return collect;
     }
 
     public void deleteMember(String uid) {
