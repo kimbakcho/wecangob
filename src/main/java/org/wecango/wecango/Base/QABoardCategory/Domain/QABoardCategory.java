@@ -1,23 +1,22 @@
 package org.wecango.wecango.Base.QABoardCategory.Domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "qaBoardCategory")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
+@Builder
 public class QABoardCategory {
 
     @Id
     String categoryName;
 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer orderIdx;
 
 }

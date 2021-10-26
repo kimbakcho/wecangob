@@ -61,6 +61,14 @@ public class FireBaseService {
             message = Message.builder()
                     .putData("payload",jsonDto)
                     .setTopic("all")
+                    .setApnsConfig(
+                            ApnsConfig.builder()
+                                    .setAps(Aps.builder()
+                                            .setContentAvailable(true)
+                                            .putCustomData("payload",jsonDto)
+                                            .build())
+                                    .build()
+                    )
                     .build();
             FirebaseMessaging.getInstance().send(message);
         }
