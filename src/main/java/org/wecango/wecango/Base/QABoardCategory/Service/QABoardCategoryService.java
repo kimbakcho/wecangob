@@ -22,7 +22,8 @@ public class QABoardCategoryService {
     final QABoardCategoryDataRepository qaBoardCategoryDataRepository;
 
     public List<QABoardCategoryResDto> getList(){
-        List<QABoardCategory> byOrderByOrderIdxAsc = qaBoardCategoryDataRepository.findAllByOrderByOrderIdxAsc();
+        List<QABoardCategory> byOrderByOrderIdxAsc = qaBoardCategoryDataRepository
+                .findAllByOrderByOrderIdxAsc();
 
         ModelMapper modelMapper = new ModelMapper();
         List<QABoardCategoryResDto> collect = byOrderByOrderIdxAsc.stream().map(x -> {
@@ -33,7 +34,7 @@ public class QABoardCategoryService {
     }
 
     public QABoardCategoryResDto changeName(QABoardCategoryNameChangeReqDto reqDto) {
-        QABoardCategory changeItem = qaBoardCategoryDataRepository.getById(reqDto.getOldCategoryName());
+        QABoardCategory changeItem = qaBoardCategoryDataRepository.getByCategoryName(reqDto.getOldCategoryName());
         changeItem.setCategoryName(reqDto.getNewCategoryName());
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(changeItem,QABoardCategoryResDto.class);
@@ -41,8 +42,8 @@ public class QABoardCategoryService {
 
 
     public void changeOrder(QABoardCategoryOrderChangReqDto reqDto) {
-        QABoardCategory replace1 = qaBoardCategoryDataRepository.getById(reqDto.getReplaceCategoryName1());
-        QABoardCategory replace2 = qaBoardCategoryDataRepository.getById(reqDto.getReplaceCategoryName2());
+        QABoardCategory replace1 = qaBoardCategoryDataRepository.getByCategoryName(reqDto.getReplaceCategoryName1());
+        QABoardCategory replace2 = qaBoardCategoryDataRepository.getByCategoryName(reqDto.getReplaceCategoryName2());
         Integer replace1OrderIdx = replace1.getOrderIdx();
         Integer replace2OrderIdx = replace2.getOrderIdx();
         replace2.setOrderIdx(-1);
@@ -53,12 +54,18 @@ public class QABoardCategoryService {
     }
 
     public void deleteItem(String categoryName) {
-        qaBoardCategoryDataRepository.deleteById(categoryName);
+        qaBoardCategoryDataRepository.deleteByCategoryName(categoryName);
     }
 
     public QABoardCategoryResDto inputName(String name) {
+        List<QABoardCategory> byOrderByOrderIdxAsc = qaBoardCategoryDataRepository
+                .findAllByOrderByOrderIdxAsc();
+
+        QABoardCategory qaBoardCategory = byOrderByOrderIdxAsc.get(byOrderByOrderIdxAsc.size() - 1);
+
         QABoardCategory saveItem = QABoardCategory.builder()
                 .categoryName(name)
+                .orderIdx(qaBoardCategory.getOrderIdx() + 1 )
                 .build();
         QABoardCategory save = qaBoardCategoryDataRepository.save(saveItem);
         ModelMapper modelMapper = new ModelMapper();

@@ -13,10 +13,13 @@ import javax.persistence.*;
 @Builder
 public class QABoardCategory {
 
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Integer id;
+
+    @Column(unique = true)
     String categoryName;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true)
     Integer orderIdx;
 
 }
