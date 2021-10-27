@@ -25,4 +25,8 @@ public class AdminContent {
     LocalDateTime updateTime;
 
     LocalDateTime createTime;
+
+    String category;
+
+    Integer orderIdx;
 }

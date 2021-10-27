@@ -10,4 +10,6 @@ import java.util.List;
 public interface AdminContentDataRepository extends JpaRepository<AdminContent,Integer> {
 
     List<AdminContentSimpleResDto> findAllSimpleByOrderByCreateTimeDesc();
+
+    List<AdminContentSimpleResDto> findAllSimpleByCategoryNotInOrderByOrderIdxDescCreateTimeDesc(List<String> nins);
 }

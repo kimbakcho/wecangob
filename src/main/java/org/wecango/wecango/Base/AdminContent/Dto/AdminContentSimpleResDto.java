@@ -10,5 +10,9 @@ public interface AdminContentSimpleResDto {
     LocalDateTime getUpdateTime();
 
     LocalDateTime getCreateTime();
+
+    String getCategory();
+
+    Integer getOrderIdx();
 }
 

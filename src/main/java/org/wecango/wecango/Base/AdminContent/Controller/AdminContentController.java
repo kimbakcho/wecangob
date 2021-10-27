@@ -40,4 +40,9 @@ public class AdminContentController {
     void delDoc(Integer id){
         adminContentService.delDoc(id);
     }
+
+    @GetMapping("/mainPage")
+    public List<AdminContentSimpleResDto> getMainPageDocs(){
+        return adminContentService.getMainPageDocs();
+    }
 }

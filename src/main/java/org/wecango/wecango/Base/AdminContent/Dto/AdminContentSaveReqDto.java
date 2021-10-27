@@ -13,4 +13,8 @@ public class AdminContentSaveReqDto {
     String markDown;
 
     String html;
+
+    String category;
+
+    Integer orderIdx;
 }

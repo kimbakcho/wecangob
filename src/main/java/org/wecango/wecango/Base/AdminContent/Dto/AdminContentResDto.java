@@ -17,5 +17,9 @@ public class AdminContentResDto {
     LocalDateTime updateTime;
 
     LocalDateTime createTime;
+
+    String category;
+
+    Integer orderIdx;
 }
 
