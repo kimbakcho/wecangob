@@ -58,12 +58,17 @@ public class UserBookMarkingCountryService {
                 .build();
         UserBookMarkingCountry save = userBookMarkingCountryDataRepository.save(userBookMarkingCountry);
         ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(save, UserBookMarkingCountryResDto.class);
+        UserBookMarkingCountryResDto userBookMarkingCountryResDto = modelMapper.map(save, UserBookMarkingCountryResDto.class);
+        ImmigrationStatus immigrationStatus = immigrationStatusDataRepository.getByNationId(nationControl);
+        ImmigrationStatusSimpleResDto immigrationStatusSimpleResDto = modelMapper.map(immigrationStatus, ImmigrationStatusSimpleResDto.class);
+        userBookMarkingCountryResDto.setImmigrationStatusSimpleResDto(immigrationStatusSimpleResDto);
+        return userBookMarkingCountryResDto;
     }
 
     public void bookUnMarking(MemberManagement memberManagement, int nationId) {
         NationControl nationControl = nationControlDataRepository.findById(nationId).get();
         userBookMarkingCountryDataRepository.deleteByUserUidAndNationId(memberManagement, nationControl);
+
     }
 
     public List<UserBookMarkingCountryResDto> bookMarkingList(MemberManagement memberManagement) {

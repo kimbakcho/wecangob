@@ -66,6 +66,8 @@ public class GoogleLogin {
             String locale = (String) payload.get("locale");
             String familyName = (String) payload.get("family_name");
             String givenName = (String) payload.get("given_name");
+            System.out.println(familyName);
+            System.out.println(givenName);
             if(pictureUrl != null){
                 pictureUrl = pictureUrl.replaceAll("http","https");
             }
@@ -75,7 +77,7 @@ public class GoogleLogin {
             if(byMember.isEmpty()){
                 MemberManagement memberBuild = MemberManagement.builder()
                         .birthDate(LocalDate.now())
-                        .email("")
+                        .email(email)
                         .fcmToken("")
                         .fromJoin("Google")
                         .joinDate(LocalDateTime.now())

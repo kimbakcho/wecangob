@@ -1,19 +1,18 @@
 package org.wecango.wecango.Base.QABoard.Service;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.jni.Local;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wecango.wecango.Base.MemberManagement.Domain.MemberManagement;
 import org.wecango.wecango.Base.NationControl.Domain.NationControl;
 import org.wecango.wecango.Base.NationControl.Repository.NationControlDataRepository;
 import org.wecango.wecango.Base.QABoard.Domain.QABoard;
-import org.wecango.wecango.Base.QABoard.Dto.QABoardComResDto;
-import org.wecango.wecango.Base.QABoard.Dto.QABoardFilterReqDto;
-import org.wecango.wecango.Base.QABoard.Dto.QABoardInsertDto;
-import org.wecango.wecango.Base.QABoard.Dto.QABoardResDto;
+import org.wecango.wecango.Base.QABoard.Dto.*;
 import org.wecango.wecango.Base.QABoard.Repository.QABoardDataRepository;
 import org.wecango.wecango.Base.QABoard.Repository.QABoardQueryRepository;
 import org.wecango.wecango.Base.QABoardReply.Domain.QABoardReply;
@@ -88,5 +87,35 @@ public class QABoardService {
     public void changeRepresentative(Integer docNumber, Integer changeOrder) {
         QABoard byId = qaBoardDataRepository.getById(docNumber);
         byId.setRepresentative(changeOrder);
+    }
+
+    public void deleteDoc(MemberManagement memberManagement, Integer docId) {
+        QABoard byId = qaBoardDataRepository.getById(docId);
+        MemberManagement writer = byId.getWriter();
+        if((memberManagement.getRole().indexOf("Admin")>=0) || writer.getUid().equals(memberManagement.getUid())){
+            qaBoardDataRepository.delete(byId);
+        }else {
+            throw new AccessDeniedException("don't have permisstion");
+        }
+    }
+
+    public QABoardResDto update(MemberManagement memberManagement, QABoardUpdateDto qaBoardUpdateDto) {
+
+        QABoard byId = qaBoardDataRepository.getById(qaBoardUpdateDto.getId());
+
+        if(memberManagement.getUid().equals(byId.getWriter().getUid())){
+            byId.setWriter(memberManagement);
+            byId.setTitle(qaBoardUpdateDto.getTitle());
+            byId.setUpdateDateTime(LocalDateTime.now());
+            byId.setClassificationQuestions(qaBoardUpdateDto.getClassificationQuestions());
+            NationControl nationName = nationControlDataRepository.getByNationName(qaBoardUpdateDto.getNationName());
+            byId.setNationName(nationName);
+            byId.setContentText(qaBoardUpdateDto.getContentText());
+            byId.setContentImageUrl(qaBoardUpdateDto.getContentImageUrl());
+            ModelMapper modelMapper = new ModelMapper();
+            return modelMapper.map(byId,QABoardResDto.class);
+        }else {
+            throw new AccessDeniedException("don't have Permisstion");
+        }
     }
 }

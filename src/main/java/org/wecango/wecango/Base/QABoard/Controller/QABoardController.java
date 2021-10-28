@@ -7,10 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.wecango.wecango.Base.MemberManagement.Domain.MemberManagement;
-import org.wecango.wecango.Base.QABoard.Dto.QABoardComResDto;
-import org.wecango.wecango.Base.QABoard.Dto.QABoardFilterReqDto;
-import org.wecango.wecango.Base.QABoard.Dto.QABoardInsertDto;
-import org.wecango.wecango.Base.QABoard.Dto.QABoardResDto;
+import org.wecango.wecango.Base.QABoard.Dto.*;
 import org.wecango.wecango.Base.QABoard.Service.QABoardService;
 
 import java.util.List;
@@ -26,6 +23,11 @@ public class QABoardController {
     @PostMapping
     QABoardResDto insert(@AuthenticationPrincipal(expression = "memberManagement") MemberManagement memberManagement, @RequestBody QABoardInsertDto qaBoardInsertDto) {
         return qaBoardService.insert(memberManagement, qaBoardInsertDto);
+    }
+
+    @PostMapping("/update")
+    QABoardResDto update(@AuthenticationPrincipal(expression = "memberManagement") MemberManagement memberManagement, @RequestBody QABoardUpdateDto qaBoardUpdateDto) {
+        return qaBoardService.update(memberManagement, qaBoardUpdateDto);
     }
 
     @PostMapping("/viewCount")
@@ -62,5 +64,12 @@ public class QABoardController {
             qaBoardService.changeRepresentative(docNumber,changeOrder);
         }
     }
+
+    @DeleteMapping("/doc")
+    void deleteDoc(@AuthenticationPrincipal(expression = "memberManagement") MemberManagement memberManagement,Integer id){
+        qaBoardService.deleteDoc(memberManagement,id);
+    }
+
+
 
 }

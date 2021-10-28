@@ -22,6 +22,8 @@ import org.wecango.wecango.Base.NationControl.Domain.NationControl;
 import org.wecango.wecango.Base.NationControl.Repository.NationControlDataRepository;
 import org.wecango.wecango.Base.UserAlarm.Domain.UserAlarm;
 import org.wecango.wecango.Base.UserAlarm.Repository.UserAlarmDataRepository;
+import org.wecango.wecango.Base.UserBookMarkingCountry.Domain.UserBookMarkingCountry;
+import org.wecango.wecango.Base.UserBookMarkingCountry.Repository.UserBookMarkingCountryDataRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,7 +36,8 @@ public class ImmigrationStatusService {
     final ImmigrationStatusDataRepository immigrationStatusDataRepository;
     final NationControlDataRepository nationControlDataRepository;
     final ImmigrationInfoManagementDataRepository immigrationInfoManagementDataRepository;
-    final NationChangeAlarmDataRepository nationChangeAlarmDataRepository;
+    final UserBookMarkingCountryDataRepository userBookMarkingCountryDataRepository;
+//    final NationChangeAlarmDataRepository nationChangeAlarmDataRepository;
     final UserAlarmDataRepository userAlarmDataRepository;
     final FireBaseService fireBaseService;
 
@@ -53,15 +56,9 @@ public class ImmigrationStatusService {
             byId.setVaccinatedLeavesCountry(save);
         }
         if(byId.getVaccinatedReturnHome()== null){
-            ImmigrationInfoManagement vaccinatedLeavesCountry = ImmigrationInfoManagement.builder()
-                    .classification("VaccinatedReturnHome")
-                    .nationId(nationControl)
-                    .contentHtml("")
-                    .contentMarkDown("")
-                    .updateDateTime(LocalDateTime.now())
-                    .build();
-            ImmigrationInfoManagement save = immigrationInfoManagementDataRepository.save(vaccinatedLeavesCountry);
-            byId.setVaccinatedReturnHome(save);
+            NationControl nation = nationControlDataRepository.getByNationName("대한민국");
+            ImmigrationInfoManagement byNationId = immigrationInfoManagementDataRepository.getByNationId(nation);
+            byId.setVaccinatedReturnHome(byNationId);
         }
         if(byId.getUnvaccinatedLeavesCountry()== null){
             ImmigrationInfoManagement vaccinatedLeavesCountry = ImmigrationInfoManagement.builder()
@@ -75,15 +72,9 @@ public class ImmigrationStatusService {
             byId.setUnvaccinatedLeavesCountry(save);
         }
         if(byId.getUnvaccinatedReturnHome()== null){
-            ImmigrationInfoManagement vaccinatedLeavesCountry = ImmigrationInfoManagement.builder()
-                    .classification("UnvaccinatedReturnHome")
-                    .nationId(nationControl)
-                    .contentHtml("")
-                    .contentMarkDown("")
-                    .updateDateTime(LocalDateTime.now())
-                    .build();
-            ImmigrationInfoManagement save = immigrationInfoManagementDataRepository.save(vaccinatedLeavesCountry);
-            byId.setUnvaccinatedReturnHome(save);
+            NationControl nation = nationControlDataRepository.getByNationName("대한민국");
+            ImmigrationInfoManagement byNationId = immigrationInfoManagementDataRepository.getByNationId(nation);
+            byId.setUnvaccinatedReturnHome(byNationId);
         }
         ModelMapper modelMapper = new ModelMapper();
         ImmigrationStatusDetailResDto resDto = modelMapper.map(byId, ImmigrationStatusDetailResDto.class);
@@ -111,8 +102,7 @@ public class ImmigrationStatusService {
 
     public ImmigrationStatusDetailResDto update(ImmigrationStatusUpdateReqDto reqDto) {
         ImmigrationStatus updateItem = immigrationStatusDataRepository.findById(reqDto.getId()).get();
-
-        List<NationChangeAlarm> alarmUsers = nationChangeAlarmDataRepository.findByNationId(updateItem.getNationId());
+        List<UserBookMarkingCountry> alarmUsers = userBookMarkingCountryDataRepository.findByNationId(updateItem.getNationId());
 
         if(reqDto.getNationFlagImageUrl() != null ){
             if(updateItem.getNationId() != null){
@@ -221,7 +211,7 @@ public class ImmigrationStatusService {
     }
 
     private void sendAlarmMessage(String nationName,String filterName,String optionName
-            ,int nationId, List<NationChangeAlarm> alarmUsers){
+            ,int nationId, List<UserBookMarkingCountry> alarmUsers){
         String message = nationName + "의 " + filterName+"이 " + optionName+"으로 변경 되었습니다.";
 
         List<UserAlarm> saveItems = alarmUsers.stream().map(x -> {
