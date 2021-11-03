@@ -33,7 +33,7 @@ public class FireBaseService {
         FirebaseApp.initializeApp(options);
     }
 
-    public void sendMessage(FcmMessageReqDto reqDto) throws JsonProcessingException, FirebaseMessagingException {
+    public void sendMessage(FcmMessageReqDto reqDto) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonDto = objectMapper.writeValueAsString(reqDto);
         Message message =null;
@@ -54,7 +54,11 @@ public class FireBaseService {
                                         .build()
                         )
                         .build();
-                FirebaseMessaging.getInstance().send(message);
+                try {
+                    FirebaseMessaging.getInstance().send(message);
+                } catch (FirebaseMessagingException e) {
+                    e.printStackTrace();
+                }
             }
 
         }else {
@@ -70,7 +74,11 @@ public class FireBaseService {
                                     .build()
                     )
                     .build();
-            FirebaseMessaging.getInstance().send(message);
+            try {
+                FirebaseMessaging.getInstance().send(message);
+            } catch (FirebaseMessagingException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

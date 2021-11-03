@@ -57,7 +57,7 @@ public class ImmigrationStatusService {
         }
         if(byId.getVaccinatedReturnHome()== null){
             NationControl nation = nationControlDataRepository.getByNationName("대한민국");
-            ImmigrationInfoManagement byNationId = immigrationInfoManagementDataRepository.getByNationId(nation);
+            ImmigrationInfoManagement byNationId = immigrationInfoManagementDataRepository.getByNationIdAndClassification(nation,"VaccinatedReturnHome");
             byId.setVaccinatedReturnHome(byNationId);
         }
         if(byId.getUnvaccinatedLeavesCountry()== null){
@@ -73,7 +73,7 @@ public class ImmigrationStatusService {
         }
         if(byId.getUnvaccinatedReturnHome()== null){
             NationControl nation = nationControlDataRepository.getByNationName("대한민국");
-            ImmigrationInfoManagement byNationId = immigrationInfoManagementDataRepository.getByNationId(nation);
+            ImmigrationInfoManagement byNationId = immigrationInfoManagementDataRepository.getByNationIdAndClassification(nation,"UnvaccinatedReturnHome");
             byId.setUnvaccinatedReturnHome(byNationId);
         }
         ModelMapper modelMapper = new ModelMapper();
@@ -114,7 +114,7 @@ public class ImmigrationStatusService {
             updateItem.setContinent(reqDto.getContinent());
         }
         if(reqDto.getTravelFlag()!=null){
-            if(updateItem.getTravelFlag() != reqDto.getTravelFlag()){
+            if(hasChangeProperty(updateItem.getTravelFlag(),reqDto.getTravelFlag())){
                 String optionName = reqDto.getTravelFlag() ? "가능" : "불가능";
                 sendAlarmMessage(updateItem.getNationId().getNationName(),"여행 가능 여부",
                         optionName,updateItem.getNationId().getId(),alarmUsers);
@@ -122,12 +122,11 @@ public class ImmigrationStatusService {
             updateItem.setTravelFlag(reqDto.getTravelFlag());
         }
         if(reqDto.getMandatoryQuarantine() != null){
-            if(updateItem.getMandatoryQuarantine() != null && !updateItem.getMandatoryQuarantine().equals(reqDto.getMandatoryQuarantine())){
+            if(hasChangeProperty(updateItem.getMandatoryQuarantine(),reqDto.getMandatoryQuarantine())){
                 sendAlarmMessage(updateItem.getNationId().getNationName(),"의무 격리",
                         reqDto.getMandatoryQuarantine(),updateItem.getNationId().getId(),alarmUsers);
             }
             updateItem.setMandatoryQuarantine(reqDto.getMandatoryQuarantine());
-
         }
         if(reqDto.getRecommendedCountry() != null){
             updateItem.setRecommendedCountry(reqDto.getRecommendedCountry());
@@ -140,7 +139,7 @@ public class ImmigrationStatusService {
             updateItem.setRecommendedCountryImageFileName(reqDto.getRecommendedCountryImageFileName());
         }
         if(reqDto.getVaccinationFlag()!=null){
-            if(updateItem.getVaccinationFlag()!=null && !updateItem.getVaccinationFlag().equals(reqDto.getVaccinationFlag()) ){
+            if(hasChangeProperty(updateItem.getVaccinationFlag(),reqDto.getVaccinationFlag())){
                 String optionName = "" ;
                 if(reqDto.getVaccinationFlag() == 0){
                     optionName = "무관";
@@ -156,7 +155,7 @@ public class ImmigrationStatusService {
 
         }
         if(reqDto.getPcrTest() != null){
-            if( updateItem.getPcrTest() != null && !updateItem.getPcrTest().equals(reqDto.getPcrTest()) ){
+            if(hasChangeProperty(updateItem.getPcrTest(),reqDto.getPcrTest())){
                 sendAlarmMessage(updateItem.getNationId().getNationName(),"PCR 검사",
                         reqDto.getPcrTest(),updateItem.getNationId().getId(),alarmUsers);
             }
@@ -164,8 +163,7 @@ public class ImmigrationStatusService {
 
         }
         if(reqDto.getMandatoryQuarantineText() != null){
-            if(updateItem.getMandatoryQuarantineText() != null &&
-                    !updateItem.getMandatoryQuarantineText().equals(reqDto.getMandatoryQuarantineText())){
+            if(hasChangeProperty(updateItem.getMandatoryQuarantineText(),reqDto.getMandatoryQuarantineText())){
                 sendAlarmMessage(updateItem.getNationId().getNationName(),"의무 격리",
                         reqDto.getMandatoryQuarantineText(),updateItem.getNationId().getId() ,alarmUsers);
             }
@@ -173,7 +171,7 @@ public class ImmigrationStatusService {
 
         }
         if(reqDto.getVisaFlag() != null ){
-            if(updateItem.getVisaFlag() != reqDto.getVisaFlag()){
+            if(hasChangeProperty(updateItem.getVisaFlag(),reqDto.getVisaFlag())){
                 String optionName = reqDto.getVisaFlag() ? "필요" : "불필요";
                 sendAlarmMessage(updateItem.getNationId().getNationName(),"Visa 필요 유무",
                         optionName,updateItem.getNationId().getId() ,alarmUsers);
@@ -181,7 +179,7 @@ public class ImmigrationStatusService {
             updateItem.setVisaFlag(reqDto.getVisaFlag());
         }
         if(reqDto.getCovidTest() != null ){
-            if(updateItem.getCovidTest() != reqDto.getCovidTest()){
+            if(hasChangeProperty(updateItem.getCovidTest(),reqDto.getCovidTest())){
                 String optionName = reqDto.getCovidTest() ? "필요" : "불필요";
                 sendAlarmMessage(updateItem.getNationId().getNationName(),"코로나 검사",
                         optionName,updateItem.getNationId().getId() ,alarmUsers);
@@ -189,15 +187,14 @@ public class ImmigrationStatusService {
             updateItem.setCovidTest(reqDto.getCovidTest());
         }
         if(reqDto.getBenefitsVaccination() != null ){
-            if(updateItem.getBenefitsVaccination() != null &&
-                    updateItem.getBenefitsVaccination().equals(reqDto.getBenefitsVaccination())){
+            if(hasChangeProperty(updateItem.getBenefitsVaccination(),reqDto.getBenefitsVaccination())){
                 sendAlarmMessage(updateItem.getNationId().getNationName(),"백신 접종자 혜택",
                         reqDto.getBenefitsVaccination(),updateItem.getNationId().getId() ,alarmUsers);
             }
             updateItem.setBenefitsVaccination(reqDto.getBenefitsVaccination());
         }
         if(reqDto.getPossibleExempted() != null){
-            if(updateItem.getPossibleExempted() != reqDto.getPossibleExempted()){
+            if(hasChangeProperty(updateItem.getPossibleExempted(),reqDto.getPossibleExempted())){
                 String optionName = reqDto.getPossibleExempted() ? "가능" : "불가능";
                 sendAlarmMessage(updateItem.getNationId().getNationName(),"면제 가능 여부",
                         optionName,updateItem.getNationId().getId() ,alarmUsers);
@@ -208,6 +205,14 @@ public class ImmigrationStatusService {
         ModelMapper modelMapper = new ModelMapper();
 
         return modelMapper.map(updateItem,ImmigrationStatusDetailResDto.class);
+    }
+    private boolean hasChangeProperty(Object tableProperty,Object reqDtoProperty){
+        if((tableProperty != null && !tableProperty.equals(reqDtoProperty)) ||
+                (tableProperty == null && reqDtoProperty != null)){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     private void sendAlarmMessage(String nationName,String filterName,String optionName
@@ -224,8 +229,6 @@ public class ImmigrationStatusService {
             try {
                 fireBaseService.sendMessage(fcmMessageReqDto);
             } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            } catch (FirebaseMessagingException e) {
                 e.printStackTrace();
             }
 
