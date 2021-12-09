@@ -1,6 +1,7 @@
 package org.wecango.wecango.Base.Login.KakaoLogin.Controller;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.http.client.utils.URIBuilder;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
@@ -18,6 +19,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -42,7 +45,7 @@ public class KakaoLogin {
     }
 
     @GetMapping("/redirect")
-    public void redirectLogin(HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException {
+    public void redirectLogin(HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException, URISyntaxException {
 
         String code = httpServletRequest.getParameter("code");
 
@@ -112,12 +115,20 @@ public class KakaoLogin {
             member = byMember.get();
         }
 
-        Cookie myCookie = new Cookie("wSesstion",jwtTokenBuilder.buildToken(member));
-        myCookie.setPath("/");
-        myCookie.setMaxAge(86400);
-        myCookie.setDomain(customPreference.CookieDomain());
-        response.addCookie(myCookie);
-        response.sendRedirect(customPreference.snsLoginRedirect());
+        URIBuilder builder = new URIBuilder(customPreference.snsLoginRedirect())
+                .addParameter("uid", id)
+                .addParameter("fromJoin","google")
+                .addParameter("nickName",nickname);
+
+        if(profile_image_url != null){
+            builder.addParameter("profileImage",profile_image_url);
+        }
+
+        String signToken = jwtTokenBuilder.snsLoginSignToken(id);
+        builder.addParameter("signToken",signToken);
+
+        URI uriResult = builder.build();
+        response.sendRedirect(uriResult.toString());
 
     }
 

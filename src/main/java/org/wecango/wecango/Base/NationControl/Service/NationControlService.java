@@ -1,6 +1,7 @@
 package org.wecango.wecango.Base.NationControl.Service;
 
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wecango.wecango.Base.NationControl.Domain.NationControl;
@@ -27,5 +28,12 @@ public class NationControlService {
     public void setDisplayFlag(Integer id, Boolean flag) {
         NationControl byId = nationControlDataRepository.getById(id);
         byId.setDisplayFlag(flag);
+    }
+
+    public NationControlResDto getNationInfo(Integer id) {
+        NationControl byId = nationControlDataRepository.getById(id);
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(byId,NationControlResDto.class);
+
     }
 }

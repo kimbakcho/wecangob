@@ -47,7 +47,7 @@ public class RealPreference implements CustomPreference{
 
     @Override
     public String snsLoginRedirect() {
-        return "https://wecango.org";
+        return "https://wecango.org/UA002";
     }
 
     @Override
@@ -79,13 +79,14 @@ public class RealPreference implements CustomPreference{
         return "5d05158ad07bfeafee833eef80a02935";
     }
 
-    @Override
-    public String googleClientId() {
-        return "352727726767-nuvi74gsk08hf746r14c1i2j2s7l6d2o.apps.googleusercontent.com";
-    }
 
     @Override
     public String fireBaseAdminKeyPath() {
         return "/home/ubuntu/wecango-firebase-adminsdk-k7rvq-015913cec3.json";
+    }
+
+    @Override
+    public String googleRedirect() {
+        return "https://api.wecango.org/googleLogin/redirect";
     }
 }

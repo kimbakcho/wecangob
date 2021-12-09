@@ -47,7 +47,7 @@ public class TestRealPreference implements CustomPreference{
 
     @Override
     public String snsLoginRedirect() {
-        return "http://app.thkomeet.com:8383/wecango";
+        return "http://app.thkomeet.com:8383/wecango/UA002";
     }
 
     @Override
@@ -80,12 +80,12 @@ public class TestRealPreference implements CustomPreference{
     }
 
     @Override
-    public String googleClientId() {
-        return "115231264132-tln84m4cvfiv8ii4p7mgkgvtd41mii1j.apps.googleusercontent.com";
+    public String fireBaseAdminKeyPath() {
+        return "/home/bhkim/wecango-firebase-adminsdk-k7rvq-015913cec3.json";
     }
 
     @Override
-    public String fireBaseAdminKeyPath() {
-        return "/home/bhkim/wecango-firebase-adminsdk-k7rvq-015913cec3.json";
+    public String googleRedirect() {
+        return "https://app.thkomeet.com:8181/googleLogin/redirect";
     }
 }

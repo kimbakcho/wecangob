@@ -21,6 +21,11 @@ public class NationControlController {
         return nationControlService.getFilter(reqDto);
     }
 
+    @GetMapping("/nationInfo")
+    NationControlResDto getNationInfo(Integer id){
+        return nationControlService.getNationInfo(id);
+    }
+
     @PostMapping("/displayFlag")
     void setDisplayFlag(Integer id,Boolean flag){
         nationControlService.setDisplayFlag(id,flag);

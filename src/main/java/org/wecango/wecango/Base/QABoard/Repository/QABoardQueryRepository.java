@@ -61,14 +61,14 @@ public class QABoardQueryRepository  extends QuerydslRepositorySupport {
                     booleanBuilder.and(qABoard.title.contains(reqDto.getTitle())
                             .or(qABoard.contentText.contains(reqDto.getContent())));
                 }
-            }else if(reqDto.getMode().equals("nation")){
-                if(reqDto.getNation() != null){
-                    NationControl nation = nationControlDataRepository.getById(reqDto.getNation());
-                    booleanBuilder.and(qABoard.nationName.id.eq(nation.getId()));
-                }
             }
+
         }
 
+        if(reqDto.getNation() != null){
+            NationControl nation = nationControlDataRepository.getById(reqDto.getNation());
+            booleanBuilder.and(qABoard.nationName.id.eq(nation.getId()));
+        }
 
         if((reqDto.getCategory() != null) && (!reqDto.getCategory().isEmpty())){
             booleanBuilder.and(qABoard.classificationQuestions.eq(reqDto.getCategory()));

@@ -1,13 +1,19 @@
 package org.wecango.wecango.Base.Login.GoogleLogin.Controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import lombok.RequiredArgsConstructor;
+import org.apache.http.client.utils.URIBuilder;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.RestTemplate;
 import org.wecango.wecango.Base.Login.Service.NickNameService;
 import org.wecango.wecango.Base.MemberManagement.Domain.MemberManagement;
 import org.wecango.wecango.Base.MemberManagement.Repository.MemberManagementDataRepository;
@@ -17,10 +23,13 @@ import org.wecango.wecango.Preference.CustomPreference;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -35,73 +44,58 @@ public class GoogleLogin {
 
     final NickNameService nickNameService;
 
-    @GetMapping
-    public void redirectLogin(String token, HttpServletResponse response) throws GeneralSecurityException, IOException {
-        System.out.println(token);
-        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
-                // Specify the CLIENT_ID of the app that accesses the backend:
-                .setAudience(Collections.singletonList(customPreference.googleClientId()))
-                // Or, if multiple clients access the backend:
-                //.setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
-                .build();
-        GoogleIdToken idToken = verifier.verify(token);
 
-        if (idToken != null) {
-            GoogleIdToken.Payload payload = idToken.getPayload();
+    @GetMapping("/redirect")
+    public void redirectLogin1(String code, HttpServletResponse response) throws URISyntaxException, IOException {
+        HttpHeaders headers = new HttpHeaders();
+        RestTemplate restTemplate = new RestTemplate();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-            // Print user identifier
-            String userId = payload.getSubject();
-            System.out.println("User ID: " + userId);
-            String id = "google_"+userId;
-            // Get profile information from payload
-            String email = payload.getEmail();
-            String name = (String) payload.get("name");
-            if(name== null || name.isEmpty()){
-                name= id;
-            }
+        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+        parameters.add("code", code);
+        parameters.add("client_id", "352727726767-nuvi74gsk08hf746r14c1i2j2s7l6d2o.apps.googleusercontent.com");
+        parameters.add("client_secret", "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");
+        parameters.add("grant_type", "authorization_code");
+        parameters.add("redirect_uri", customPreference.googleRedirect());
 
-            name = nickNameService.getNickName(name);
+        HttpEntity<MultiValueMap<String,String>> rest_request = new HttpEntity<>(parameters,headers);
 
-            String pictureUrl = (String) payload.get("picture");
-            String locale = (String) payload.get("locale");
-            String familyName = (String) payload.get("family_name");
-            String givenName = (String) payload.get("given_name");
-            System.out.println(familyName);
-            System.out.println(givenName);
-            if(pictureUrl != null){
-                pictureUrl = pictureUrl.replaceAll("http","https");
-            }
+        URI uri = URI.create("https://www.googleapis.com/oauth2/v4/token");
 
-            Optional<MemberManagement> byMember = memberManagementDataRepository.findById(id);
-            MemberManagement member;
-            if(byMember.isEmpty()){
-                MemberManagement memberBuild = MemberManagement.builder()
-                        .birthDate(LocalDate.now())
-                        .email(email)
-                        .fcmToken("")
-                        .fromJoin("Google")
-                        .joinDate(LocalDateTime.now())
-                        .nickName(name)
-                        .profileImage(pictureUrl)
-                        .realName(name)
-                        .uid(id)
-                        .userActivationStatus(false)
-                        .vaccineCertificateRegistration(false)
-                        .role("User")
-                        .build();
-                member = memberManagementDataRepository.save(memberBuild);
-            }else {
-                member = byMember.get();
-            }
-            Cookie myCookie = new Cookie("wSesstion",jwtTokenBuilder.buildToken(member));
-            myCookie.setPath("/");
-            myCookie.setMaxAge(86400);
-            myCookie.setDomain(customPreference.CookieDomain());
-            response.addCookie(myCookie);
-            response.sendRedirect(customPreference.snsLoginRedirect());
+        ResponseEntity<String> rest_reponse;
+        rest_reponse = restTemplate.postForEntity(uri, rest_request, String.class);
+        String bodys = rest_reponse.getBody();
+        ObjectMapper objectMapper =new ObjectMapper();
+        Map<String,String> map = objectMapper.readValue(bodys, Map.class);
+
+        HttpHeaders headers2 = new HttpHeaders();
+        String access_token = "Bearer " + map.get("access_token");
+        headers2.set("Authorization",access_token);
+        HttpEntity rest_request2 = new HttpEntity<>(headers2);
+        ResponseEntity<Map> exchange =
+                restTemplate.exchange("https://www.googleapis.com/oauth2/v2/userinfo", HttpMethod.GET,rest_request2
+                        , Map.class);
+        Map userinfoBody = exchange.getBody();
+
+        String id = "google_"+userinfoBody.get("id");
+
+        URIBuilder builder = new URIBuilder(customPreference.snsLoginRedirect())
+                .addParameter("uid", id)
+                .addParameter("fromJoin","google");
+
+        if(userinfoBody.get("given_name") != null){
+            builder.addParameter("nickName",(String) userinfoBody.get("given_name"));
         }
 
-    }
+        if(userinfoBody.get("picture") != null){
+            builder.addParameter("profileImage",(String) userinfoBody.get("picture"));
+        }
 
+        String signToken = jwtTokenBuilder.snsLoginSignToken(id);
+        builder.addParameter("signToken",signToken);
+
+        URI uriResult = builder.build();
+        response.sendRedirect(uriResult.toString());
+    }
 
 }

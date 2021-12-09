@@ -46,7 +46,7 @@ public class LocalPreference implements CustomPreference{
 
     @Override
     public String snsLoginRedirect() {
-        return "http://localhost:8080";
+        return "http://localhost:8080/UA002";
     }
 
     @Override
@@ -79,14 +79,15 @@ public class LocalPreference implements CustomPreference{
         return "42d9c5ccc2e2d85d76462e8c232a1b96";
     }
 
-    @Override
-    public String googleClientId() {
-        return "115231264132-tln84m4cvfiv8ii4p7mgkgvtd41mii1j.apps.googleusercontent.com";
-    }
 
     @Override
     public String fireBaseAdminKeyPath() {
         return "C:\\\\workproject\\\\wecangob\\\\wecango-firebase-adminsdk-k7rvq-015913cec3.json";
+    }
+
+    @Override
+    public String googleRedirect() {
+        return "http://localhost:8181/googleLogin/redirect";
     }
 
 }

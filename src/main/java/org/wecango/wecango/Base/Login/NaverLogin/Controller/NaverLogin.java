@@ -1,6 +1,7 @@
 package org.wecango.wecango.Base.Login.NaverLogin.Controller;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.http.client.utils.URIBuilder;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,8 @@ import org.wecango.wecango.Preference.CustomPreference;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -34,7 +37,7 @@ public class NaverLogin {
     final NickNameService nickNameService;
 
     @GetMapping
-    public void redirectLogin(String token,HttpServletResponse response) throws IOException {
+    public void redirectLogin(String token,HttpServletResponse response) throws IOException, URISyntaxException {
         System.out.println(token);
 
         RestTemplate naverAuthLogin = new RestTemplate();
@@ -88,13 +91,20 @@ public class NaverLogin {
             member = byMember.get();
         }
 
-        Cookie myCookie = new Cookie("wSesstion",jwtTokenBuilder.buildToken(member));
-        myCookie.setPath("/");
-        myCookie.setMaxAge(86400);
-        myCookie.setDomain(customPreference.CookieDomain());
-        response.addCookie(myCookie);
-        response.sendRedirect(customPreference.snsLoginRedirect());
+        URIBuilder builder = new URIBuilder(customPreference.snsLoginRedirect())
+                .addParameter("uid", id)
+                .addParameter("fromJoin","google")
+                .addParameter("nickName",name);
 
+        if(profile_image != null){
+            builder.addParameter("profileImage",profile_image);
+        }
+
+        String signToken = jwtTokenBuilder.snsLoginSignToken(id);
+        builder.addParameter("signToken",signToken);
+
+        URI uriResult = builder.build();
+        response.sendRedirect(uriResult.toString());
     }
 
 

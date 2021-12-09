@@ -17,6 +17,7 @@ public interface CustomPreference {
     String AdminPage();
     String CookieDomain();
     String kakaoClientId();
-    String googleClientId();
     String fireBaseAdminKeyPath();
+
+    String googleRedirect();
 }

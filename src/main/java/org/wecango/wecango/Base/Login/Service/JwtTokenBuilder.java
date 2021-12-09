@@ -35,4 +35,19 @@ public class JwtTokenBuilder {
                 .setClaims(claims)
                 .compact();
     }
+
+    public String snsLoginSignToken(String id){
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expiredAt = now.plus(82600, ChronoUnit.SECONDS);
+        Map<String,Object> claims = new LinkedHashMap<>();
+        claims.put("uid",id);
+        claims.put("exp", Date.from(expiredAt.atZone(ZoneId.systemDefault()).toInstant()));
+        return Jwts.builder()
+                .setSubject(id)
+                .setIssuedAt(Date.from(now.atZone(ZoneId.systemDefault()).toInstant()))
+                .setExpiration(Date.from(expiredAt.atZone(ZoneId.systemDefault()).toInstant()))
+                .signWith(SignatureAlgorithm.HS512, customPreference.JWTSecurityKey())
+                .setClaims(claims)
+                .compact();
+    }
 }

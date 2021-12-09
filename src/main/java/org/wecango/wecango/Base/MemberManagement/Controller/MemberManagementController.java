@@ -7,14 +7,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.wecango.wecango.Base.Common.ErrorResult;
 import org.wecango.wecango.Base.MemberManagement.Domain.MemberManagement;
-import org.wecango.wecango.Base.MemberManagement.Dto.FcmTokenUpdateReqDto;
-import org.wecango.wecango.Base.MemberManagement.Dto.MemberManagementResDto;
-import org.wecango.wecango.Base.MemberManagement.Dto.MemberManagementSimpleResDto;
-import org.wecango.wecango.Base.MemberManagement.Dto.MemberSearchReqDto;
+import org.wecango.wecango.Base.MemberManagement.Dto.*;
 import org.wecango.wecango.Base.MemberManagement.Service.MemberManagementService;
 import org.wecango.wecango.Security.AccountAdapter;
 
@@ -37,6 +36,11 @@ public class MemberManagementController {
             MemberManagementSimpleResDto map = modelMapper.map(accountAdapter.getMemberManagement(), MemberManagementSimpleResDto.class);
             return map;
         }
+    }
+
+    @GetMapping("/isJoined")
+    public boolean isJoined(String uid){
+        return memberManagementService.isJoined(uid);
     }
 
     @GetMapping("/checkNickName")
@@ -82,6 +86,17 @@ public class MemberManagementController {
         if(memberManagement.getRole().indexOf("Admin") >= 0) {
             memberManagementService.deleteMember(uid);
         }
+    }
+
+    @PostMapping("/join")
+    public MemberJoinResDto join(@RequestBody MemberJoinReqDto joinReqDto) throws java.nio.file.AccessDeniedException {
+        return memberManagementService.join(joinReqDto);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler()
+    public ErrorResult illegalExHandle(Exception e) {
+        return new ErrorResult("BAD", e.getMessage());
     }
 
 }
