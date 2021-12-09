@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.wecango.wecango.Base.MemberManagement.Domain.MemberManagement;
 import org.wecango.wecango.Base.QABoardReply.Dto.QABoardReplyInsertReqDto;
 import org.wecango.wecango.Base.QABoardReply.Dto.QABoardReplyResDto;
+import org.wecango.wecango.Base.QABoardReply.Dto.QABoardReplyUpdateReqDto;
 import org.wecango.wecango.Base.QABoardReply.Service.QABoardReplyService;
 
 import java.util.List;
@@ -35,4 +36,19 @@ public class QABoardReplyController {
             qaBoardReplyService.changeRepresentativeComment(replyNumber,changeOrder);
         }
     }
+
+    @PostMapping("/updateReply")
+    public QABoardReplyResDto updateReply(@RequestBody QABoardReplyUpdateReqDto reqDto,
+                                          @AuthenticationPrincipal(expression = "memberManagement") MemberManagement memberManagement){
+        return qaBoardReplyService.updateReply(reqDto,memberManagement);
+
+    }
+
+    @DeleteMapping()
+    public void delete(Integer id,
+                       @AuthenticationPrincipal(expression = "memberManagement") MemberManagement memberManagement){
+        qaBoardReplyService.delete(id,memberManagement);
+    }
+
+
 }

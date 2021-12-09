@@ -41,4 +41,6 @@ public class QABoard {
     LocalDateTime updateDateTime;
 
     Integer representative;
+
+    Integer reportCount;
 }

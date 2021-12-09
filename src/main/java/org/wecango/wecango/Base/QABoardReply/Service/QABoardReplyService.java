@@ -2,6 +2,7 @@ package org.wecango.wecango.Base.QABoardReply.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wecango.wecango.Base.MemberManagement.Domain.MemberManagement;
@@ -13,6 +14,7 @@ import org.wecango.wecango.Base.QABoard.Repository.QABoardDataRepository;
 import org.wecango.wecango.Base.QABoardReply.Domain.QABoardReply;
 import org.wecango.wecango.Base.QABoardReply.Dto.QABoardReplyInsertReqDto;
 import org.wecango.wecango.Base.QABoardReply.Dto.QABoardReplyResDto;
+import org.wecango.wecango.Base.QABoardReply.Dto.QABoardReplyUpdateReqDto;
 import org.wecango.wecango.Base.QABoardReply.Repository.QABoardReplyDataRepository;
 
 import java.time.LocalDateTime;
@@ -72,5 +74,34 @@ public class QABoardReplyService {
     public void changeRepresentativeComment(Integer replyNumber, Integer changeOrder) {
         QABoardReply byId = qaBoardReplyDataRepository.getById(replyNumber);
         byId.setRepresentativeComment(changeOrder);
+    }
+
+    public QABoardReplyResDto updateReply(QABoardReplyUpdateReqDto reqDto, MemberManagement memberManagement) {
+
+        QABoardReply byId = qaBoardReplyDataRepository.getById(reqDto.getReplyId());
+
+        if(byId.getWriter().getUid().equals(memberManagement.getUid())
+                || memberManagement.getRole().indexOf("Admin") > 0){
+            byId.setContent(reqDto.getReplyText());
+            byId.setUpdateDateTime(LocalDateTime.now());
+            ModelMapper modelMapper = new ModelMapper();
+            return modelMapper.map(byId,QABoardReplyResDto.class);
+        }else {
+            throw  new AccessDeniedException("권한이 없습니다");
+        }
+
+    }
+
+    public void delete(Integer id, MemberManagement memberManagement) {
+        QABoardReply byId = qaBoardReplyDataRepository.getById(id);
+        if(byId.getWriter().getUid().equals(memberManagement.getUid())
+                || memberManagement.getRole().indexOf("Admin") > 0){
+            QABoard qaBoard = qaBoardDataRepository.getById(byId.getQaBoardId().getId());
+            qaBoard.setReplyCount(qaBoard.getReplyCount()-1);
+            qaBoardReplyDataRepository.delete(byId);
+
+        }else {
+            throw  new AccessDeniedException("권한이 없습니다");
+        }
     }
 }

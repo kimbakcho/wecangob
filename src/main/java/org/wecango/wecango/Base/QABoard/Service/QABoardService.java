@@ -47,6 +47,7 @@ public class QABoardService {
                 .view(0)
                 .writer(memberManagement)
                 .updateDateTime(LocalDateTime.now())
+                .reportCount(0)
                 .build();
 
         QABoard save = qaBoardDataRepository.save(build);

@@ -76,7 +76,7 @@ public class LocalPreference implements CustomPreference{
 
     @Override
     public String kakaoClientId() {
-        return "42d9c5ccc2e2d85d76462e8c232a1b96";
+        return "5d05158ad07bfeafee833eef80a02935";
     }
 
 
