@@ -35,4 +35,6 @@ public class QABoardReply {
     LocalDateTime updateDateTime;
 
     Integer representativeComment;
+
+    Integer badReportCount;
 }

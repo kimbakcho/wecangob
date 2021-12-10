@@ -49,6 +49,7 @@ public class QABoardReplyService {
                 .writer(memberManagement)
                 .qaBoardCategory(reqDto.getQaBoardCategory())
                 .nationName(nationName)
+                .badReportCount(0)
                 .build();
 
         QABoardReply save = qaBoardReplyDataRepository.save(qaBoardReply);
