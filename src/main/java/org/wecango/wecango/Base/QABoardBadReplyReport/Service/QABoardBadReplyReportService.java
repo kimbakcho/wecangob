@@ -2,6 +2,8 @@ package org.wecango.wecango.Base.QABoardBadReplyReport.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wecango.wecango.Base.MemberManagement.Domain.MemberManagement;
@@ -35,5 +37,19 @@ public class QABoardBadReplyReportService {
         qaBoardReply.setBadReportCount(qaBoardReply.getBadReportCount()+1);
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(save,QABoardBadReplyReportResDto.class);
+    }
+
+    public Page<QABoardBadReplyReportResDto> getReports(PageRequest pageable) {
+        Page<QABoardBadReplyReport> reports = qaBoardBadReplyReportDataRepository.findAll(pageable);
+        ModelMapper modelMapper = new ModelMapper();
+        Page<QABoardBadReplyReportResDto> boardBadReplyReportResDtos = reports.map(x -> {
+            return modelMapper.map(x, QABoardBadReplyReportResDto.class);
+        });
+        return boardBadReplyReportResDtos;
+    }
+
+    public void deleteReportReply(Integer id) {
+        QABoardBadReplyReport badReplyReport = qaBoardBadReplyReportDataRepository.getById(id);
+        qaBoardReplyDataRepository.delete(badReplyReport.getReply());
     }
 }

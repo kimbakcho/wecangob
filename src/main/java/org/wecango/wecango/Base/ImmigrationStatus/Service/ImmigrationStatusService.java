@@ -170,6 +170,9 @@ public class ImmigrationStatusService {
             updateItem.setMandatoryQuarantineText(reqDto.getMandatoryQuarantineText());
 
         }
+        if(reqDto.getPublicAnnouncement() != null){
+            updateItem.setPublicAnnouncement(reqDto.getPublicAnnouncement());
+        }
         if(reqDto.getVisaFlag() != null ){
             if(hasChangeProperty(updateItem.getVisaFlag(),reqDto.getVisaFlag())){
                 String optionName = reqDto.getVisaFlag() ? "필요" : "불필요";

@@ -21,4 +21,5 @@ public class ImmigrationStatusUpdateReqDto {
     Boolean covidTest;
     String benefitsVaccination;
     Boolean possibleExempted;
+    String publicAnnouncement;
 }

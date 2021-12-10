@@ -31,5 +31,5 @@ public class ImmigrationStatusDetailResDto {
     ImmigrationInfoManagementResDto vaccinatedReturnHome;
     ImmigrationInfoManagementResDto unvaccinatedLeavesCountry;
     ImmigrationInfoManagementResDto unvaccinatedReturnHome;
-
+    String publicAnnouncement;
 }

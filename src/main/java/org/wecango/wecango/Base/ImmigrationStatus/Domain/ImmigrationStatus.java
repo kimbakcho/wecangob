@@ -48,4 +48,6 @@ public class ImmigrationStatus {
     @JoinColumn(name = "unvaccinatedReturnHome")
     @ManyToOne()
     ImmigrationInfoManagement unvaccinatedReturnHome;
+
+    String publicAnnouncement;
 }
